@@ -6,6 +6,7 @@ const morgan = require("morgan");
 
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes"); // Task 2: auth routes
+const testRoutes = require("./routes/testRoutes");  // Task 3: temporary middleware test routes
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.get("/api/health", (req, res) => {
 
 // --- Auth Routes ---
 app.use("/api/auth", authRoutes); // Task 2: signup and login
+
+// --- Test Routes (TEMPORARY — Task 3) ---
+app.use("/api/test", testRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above
