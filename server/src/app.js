@@ -5,9 +5,11 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const errorHandler = require("./middleware/errorHandler");
-const authRoutes = require("./routes/authRoutes");       // Task 2: auth routes
-const testRoutes = require("./routes/testRoutes");        // Task 3: temporary middleware test routes
-const companyRoutes = require("./routes/companyRoutes"); // Task 4: company routes
+const authRoutes = require("./routes/authRoutes");             // Task 2: auth routes
+const testRoutes = require("./routes/testRoutes");              // Task 3: temporary middleware test routes
+const companyRoutes = require("./routes/companyRoutes");       // Task 4: company routes
+const adminRoutes = require("./routes/adminRoutes");           // Task 5: admin routes
+const experienceRoutes = require("./routes/experienceRoutes"); // Task 6: experience routes
 
 const app = express();
 
@@ -34,6 +36,12 @@ app.use("/api/test", testRoutes);
 
 // --- Company Routes (Task 4) ---
 app.use("/api/companies", companyRoutes);
+
+// --- Admin Routes (Task 5) ---
+app.use("/api/admin", adminRoutes);
+
+// --- Experience Routes (Task 6) ---
+app.use("/api/experiences", experienceRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above
