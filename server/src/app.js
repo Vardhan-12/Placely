@@ -6,10 +6,12 @@ const morgan = require("morgan");
 
 const errorHandler = require("./middleware/errorHandler");
 const authRoutes = require("./routes/authRoutes");             // Task 2: auth routes
-const testRoutes = require("./routes/testRoutes");              // Task 3: temporary middleware test routes
 const companyRoutes = require("./routes/companyRoutes");       // Task 4: company routes
 const adminRoutes = require("./routes/adminRoutes");           // Task 5: admin routes
 const experienceRoutes = require("./routes/experienceRoutes"); // Task 6: experience routes
+const qaRoutes = require("./routes/qaRoutes");                 // Task 7: Q&A routes
+const bookmarkRoutes = require("./routes/bookmarkRoutes");     // Task 8: bookmark routes
+const userRoutes = require("./routes/userRoutes");             // Task 8: public user profile routes
 
 const app = express();
 
@@ -31,17 +33,23 @@ app.get("/api/health", (req, res) => {
 // --- Auth Routes ---
 app.use("/api/auth", authRoutes); // Task 2: signup and login
 
-// --- Test Routes (TEMPORARY — Task 3) ---
-app.use("/api/test", testRoutes);
-
 // --- Company Routes (Task 4) ---
 app.use("/api/companies", companyRoutes);
 
-// --- Admin Routes (Task 5) ---
+// --- Admin Routes (Task 5 & 8) ---
 app.use("/api/admin", adminRoutes);
 
 // --- Experience Routes (Task 6) ---
 app.use("/api/experiences", experienceRoutes);
+
+// --- Q&A Routes (Task 7) ---
+app.use("/api/qa", qaRoutes);
+
+// --- Bookmark Routes (Task 8) ---
+app.use("/api/bookmarks", bookmarkRoutes);
+
+// --- Public User Routes (Task 8) ---
+app.use("/api/users", userRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above

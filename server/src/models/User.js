@@ -54,6 +54,16 @@ const userSchema = new mongoose.Schema(
     placedYear: {
       type: Number,
     },
+
+    bookmarks: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Experience",
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields automatically

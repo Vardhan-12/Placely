@@ -2,6 +2,9 @@
 
 const mongoose = require("mongoose");
 const User = require("../models/User");
+const Company = require("../models/Company");
+const Experience = require("../models/Experience");
+const Question = require("../models/Question");
 
 // ─────────────────────────────────────────────
 // @route   GET /api/admin/seniors
@@ -121,9 +124,40 @@ const rejectSenior = async (req, res, next) => {
   }
 };
 
+// ─────────────────────────────────────────────
+// @route   GET /api/admin/stats
+// @desc    Get dashboard stats (users, pending seniors, companies, experiences, questions)
+// @access  Private — Admin
+// ─────────────────────────────────────────────
+const getStats = async (req, res, next) => {
+  try {
+    const [users, pendingSeniors, companies, experiences, questions] = await Promise.all([
+      User.countDocuments(),
+      User.countDocuments({ role: "senior", isVerified: false }),
+      Company.countDocuments(),
+      Experience.countDocuments(),
+      Question.countDocuments(),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        users,
+        pendingSeniors,
+        companies,
+        experiences,
+        questions,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getSeniors,
   approveSenior,
   rejectSenior,
+  getStats,
 };
 
