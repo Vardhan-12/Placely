@@ -36,7 +36,7 @@ The server runs on `http://localhost:5000` by default.
 
 ### 4. Verify it's working
 ```
-GET http://localhost:5000/api/health
+GET http://localhost:5000/arpi/health
 ```
 Expected response:
 ```json

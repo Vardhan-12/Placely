@@ -5,8 +5,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const errorHandler = require("./middleware/errorHandler");
-const authRoutes = require("./routes/authRoutes"); // Task 2: auth routes
-const testRoutes = require("./routes/testRoutes");  // Task 3: temporary middleware test routes
+const authRoutes = require("./routes/authRoutes");       // Task 2: auth routes
+const testRoutes = require("./routes/testRoutes");        // Task 3: temporary middleware test routes
+const companyRoutes = require("./routes/companyRoutes"); // Task 4: company routes
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.use("/api/auth", authRoutes); // Task 2: signup and login
 
 // --- Test Routes (TEMPORARY — Task 3) ---
 app.use("/api/test", testRoutes);
+
+// --- Company Routes (Task 4) ---
+app.use("/api/companies", companyRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above
