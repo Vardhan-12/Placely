@@ -40,6 +40,20 @@ const userSchema = new mongoose.Schema(
       // Seniors need manual verification; juniors and admins are auto-verified
       // The default is set dynamically in the pre-save hook below
     },
+
+    branch: {
+      type: String,
+      trim: true,
+    },
+
+    placedCompany: {
+      type: String,
+      trim: true,
+    },
+
+    placedYear: {
+      type: Number,
+    },
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields automatically

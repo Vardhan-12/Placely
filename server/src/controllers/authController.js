@@ -15,49 +15,87 @@ const generateToken = (userId, role) => {
 
 // ─────────────────────────────────────────────
 // @route   POST /api/auth/signup
-// @desc    Register a new junior or senior user
+// @desc    Register a new junior, senior, or admin user
 // @access  Public
 // ─────────────────────────────────────────────
 const signup = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, branch, placedCompany, placedYear, adminCode } = req.body;
 
-    // --- Input validation ---
-    if (!name || !email || !password) {
+    // Validate name (required, trimmed, at least 2 chars)
+    if (!name || typeof name !== "string" || name.trim().length < 2) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, and password are required",
+        message: "Name is required and must be at least 2 characters",
       });
     }
 
-    if (password.length < 6) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || typeof email !== "string" || !emailRegex.test(email.trim())) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid email address",
+      });
+    }
+
+    // Validate password (at least 6 characters)
+    if (!password || typeof password !== "string" || password.length < 6) {
       return res.status(400).json({
         success: false,
         message: "Password must be at least 6 characters",
       });
     }
 
-    // Only junior or senior roles are allowed at signup; admin accounts cannot be self-created
-    const allowedRoles = ["junior", "senior"];
-    if (role && !allowedRoles.includes(role)) {
-      return res.status(403).json({
+    // Validate role (defaults to junior)
+    const userRole = role || "junior";
+    const allowedRoles = ["junior", "senior", "admin"];
+    if (!allowedRoles.includes(userRole)) {
+      return res.status(400).json({
         success: false,
-        message: "You cannot sign up with that role. Allowed roles: junior, senior",
+        message: "Role must be junior, senior, or admin",
       });
     }
 
-    // --- Create user (password hashed in pre-save hook) ---
+    // Admin validation: requires matching admin code from environment
+    if (userRole === "admin") {
+      if (
+        !process.env.ADMIN_SIGNUP_CODE ||
+        !adminCode ||
+        adminCode !== process.env.ADMIN_SIGNUP_CODE
+      ) {
+        return res.status(403).json({
+          success: false,
+          message: "Invalid admin code",
+        });
+      }
+    }
+
+    // Senior validation: placedCompany and placedYear are required
+    if (userRole === "senior") {
+      if (!placedCompany || !placedCompany.toString().trim() || placedYear === undefined || placedYear === null || placedYear === "") {
+        return res.status(400).json({
+          success: false,
+          message: "placedCompany and placedYear are required for senior signup",
+        });
+      }
+    }
+
+    // Create user (isVerified set in User model pre-save hook based on role)
     const user = await User.create({
-      name,
-      email,
+      name: name.trim(),
+      email: email.trim(),
       password,
-      role: role || "junior", // default to junior if not provided
+      role: userRole,
+      branch: branch ? branch.trim() : undefined,
+      placedCompany: placedCompany ? placedCompany.toString().trim() : undefined,
+      placedYear: placedYear ? Number(placedYear) : undefined,
     });
 
     // Generate JWT for the new user
     const token = generateToken(user._id, user.role);
 
-    // Return user data WITHOUT the password field
+    // Return user data without password or adminCode
     res.status(201).json({
       success: true,
       token,
@@ -66,6 +104,9 @@ const signup = async (req, res, next) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        branch: user.branch,
+        placedCompany: user.placedCompany,
+        placedYear: user.placedYear,
         isVerified: user.isVerified,
         createdAt: user.createdAt,
       },
