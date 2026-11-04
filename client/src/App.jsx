@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Companies from "./pages/Companies";
 import CompanyDetail from "./pages/CompanyDetail";
+import ExperienceDetail from "./pages/ExperienceDetail";
+import ExperienceForm from "./pages/ExperienceForm";
+import MyPosts from "./pages/MyPosts";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
@@ -22,6 +25,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/companies" element={<Companies />} />
               <Route path="/companies/:id" element={<CompanyDetail />} />
+              <Route path="/experiences/new" element={<ExperienceForm />} />
+              <Route path="/experiences/:id/edit" element={<ExperienceForm />} />
+              <Route path="/experiences/:id" element={<ExperienceDetail />} />
+              <Route path="/my-posts" element={<MyPosts />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="*" element={<NotFound />} />

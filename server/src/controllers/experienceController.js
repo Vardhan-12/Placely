@@ -331,10 +331,39 @@ const toggleUpvote = async (req, res, next) => {
   }
 };
 
+// ─────────────────────────────────────────────
+// @route   GET /api/experiences/mine
+// @desc    Get all experiences authored by the logged-in senior (incl. anonymous)
+// @access  Private — Senior only
+// ─────────────────────────────────────────────
+const getMyExperiences = async (req, res, next) => {
+  try {
+    const experiences = await Experience.find({ author: req.user._id })
+      .populate("company", "name")
+      .populate("author", "name")
+      .sort({ createdAt: -1 });
+
+    // Return raw docs (isAnonymous visible, real author preserved) — owner sees all
+    const data = experiences.map((exp) => {
+      const doc = exp.toObject();
+      return doc;
+    });
+
+    res.status(200).json({
+      success: true,
+      count: data.length,
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createExperience,
   getExperiences,
   getExperienceById,
+  getMyExperiences,
   updateExperience,
   deleteExperience,
   toggleUpvote,

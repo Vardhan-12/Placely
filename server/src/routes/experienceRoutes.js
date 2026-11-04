@@ -7,6 +7,7 @@ const {
   createExperience,
   getExperiences,
   getExperienceById,
+  getMyExperiences,
   updateExperience,
   deleteExperience,
   toggleUpvote,
@@ -18,6 +19,10 @@ const { requireVerified } = require("../middleware/verifiedMiddleware");
 
 // Public routes
 router.get("/", getExperiences);
+
+// Protected: senior's own experiences — MUST be before /:id to avoid "mine" being treated as an id
+router.get("/mine", protect, authorizeRoles("senior"), getMyExperiences);
+
 router.get("/:id", getExperienceById);
 
 // Verified senior only route for posting

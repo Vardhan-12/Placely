@@ -328,7 +328,10 @@ const CompanyDetail = () => {
 
             {/* If verified senior, show Write Experience CTA */}
             {isVerifiedSenior && (
-              <Link to="/experiences/new" className="btn btn-primary">
+              <Link
+                to={`/experiences/new?company=${company._id}`}
+                className="btn btn-primary"
+              >
                 Write Experience
               </Link>
             )}
@@ -342,7 +345,10 @@ const CompanyDetail = () => {
               message={`Be the first to share your interview experience at ${company.name}!`}
               action={
                 isVerifiedSenior ? (
-                  <Link to="/experiences/new" className="btn btn-primary">
+                  <Link
+                    to={`/experiences/new?company=${company._id}`}
+                    className="btn btn-primary"
+                  >
                     Share Experience
                   </Link>
                 ) : null
