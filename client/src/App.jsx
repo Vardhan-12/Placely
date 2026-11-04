@@ -10,6 +10,7 @@ import CompanyDetail from "./pages/CompanyDetail";
 import ExperienceDetail from "./pages/ExperienceDetail";
 import ExperienceForm from "./pages/ExperienceForm";
 import MyPosts from "./pages/MyPosts";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/experiences/:id/edit" element={<ExperienceForm />} />
               <Route path="/experiences/:id" element={<ExperienceDetail />} />
               <Route path="/my-posts" element={<MyPosts />} />
+              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="*" element={<NotFound />} />
