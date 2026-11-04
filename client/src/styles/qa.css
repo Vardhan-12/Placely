@@ -234,3 +234,75 @@
   flex-shrink: 0;
 }
 
+/* ── Verification Banner & My Posts Tabs ── */
+.senior-pending-banner {
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-left: 4px solid var(--warning);
+  color: #92400e;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.myposts-tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.myposts-tab-btn {
+  background: none;
+  border: none;
+  padding: 10px 4px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.15s ease;
+}
+
+.myposts-tab-btn:hover {
+  color: var(--navy);
+}
+
+.myposts-tab-btn.active {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.myposts-subtabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.myposts-subtab-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.myposts-subtab-btn:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.myposts-subtab-btn.active {
+  background-color: var(--navy);
+  border-color: var(--navy);
+  color: #ffffff;
+}
+
+

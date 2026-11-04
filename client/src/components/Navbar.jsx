@@ -80,8 +80,8 @@ const Navbar = () => {
               Companies
             </Link>
 
-            {/* Saved bookmarks navigation */}
-            {isAuthenticated && (
+            {/* Junior-specific navigation */}
+            {isAuthenticated && user?.role === "junior" && (
               <Link
                 to="/bookmarks"
                 style={{
