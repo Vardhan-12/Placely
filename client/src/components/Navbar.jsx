@@ -141,9 +141,18 @@ const Navbar = () => {
           {isAuthenticated ? (
             <>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: "0.9rem", color: "#ffffff", fontWeight: 500 }}>
+                <Link
+                  to="/profile"
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "#ffffff",
+                    fontWeight: 500,
+                    textDecoration: "none",
+                  }}
+                  title="View your profile"
+                >
                   {user.name}
-                </span>
+                </Link>
                 <span className={getRoleBadgeClass(user.role)}>{user.role}</span>
               </div>
               <button

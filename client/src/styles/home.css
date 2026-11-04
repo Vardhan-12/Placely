@@ -1,0 +1,231 @@
+/* home.css - Styles for Home page (desktop only, clean & minimal, no gradients) */
+
+.home-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 20px 64px;
+}
+
+/* ── Hero Section ── */
+.home-hero {
+  text-align: center;
+  padding: 40px 20px 48px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 48px;
+}
+
+.home-hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.home-hero-desc {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 600px;
+  margin: 0 auto 28px;
+  line-height: 1.5;
+}
+
+.home-hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+/* ── Search Bar ── */
+.home-search-form {
+  display: flex;
+  align-items: center;
+  max-width: 540px;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+.home-search-input {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  outline: none;
+  background-color: #ffffff;
+  color: var(--text);
+}
+
+.home-search-input:focus {
+  border-color: var(--blue);
+}
+
+/* ── Sections ── */
+.home-section {
+  margin-bottom: 56px;
+}
+
+.home-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.home-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.home-section-link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+/* ── Upcoming Drives Grid ── */
+.home-drives-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.home-drive-card {
+  display: block;
+  padding: 20px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.home-drive-card:hover {
+  border-color: var(--blue);
+}
+
+.home-drive-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.home-drive-pkg {
+  font-size: 0.95rem;
+  color: var(--blue);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.home-drive-date {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ── Latest Experiences Grid ── */
+.home-exp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.home-exp-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.home-exp-card:hover {
+  border-color: var(--blue);
+}
+
+.home-exp-company {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.home-exp-role {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.home-exp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+/* ── How It Works ── */
+.home-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.home-step-card {
+  padding: 24px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  text-align: left;
+}
+
+.home-step-num {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.home-step-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.home-step-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Footer ── */
+.home-footer-strip {
+  border-top: 1px solid var(--border);
+  padding: 32px 0 16px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.home-footer-brand {
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+

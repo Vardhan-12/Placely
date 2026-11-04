@@ -1,7 +1,7 @@
 // Companies.jsx - Public companies directory with search, filter, and sorting
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
@@ -19,12 +19,15 @@ const formatPackageRange = (min, max) => {
 };
 
 const Companies = () => {
+  const [searchParams] = useSearchParams();
+  const initialSearch = searchParams.get("search") || "";
+
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Filter & Search states
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isUpcomingOnly, setIsUpcomingOnly] = useState(false);
   const [sortBy, setSortBy] = useState("latest");

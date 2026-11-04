@@ -276,7 +276,16 @@ const ExperienceDetail = () => {
         <div className="exp-author-bar">
           <span>Shared by</span>
           <span className="exp-author-name">
-            {experience.isAnonymous ? "Anonymous" : experience.author?.name || "Senior"}
+            {experience.isAnonymous || !experience.author?._id ? (
+              "Anonymous"
+            ) : (
+              <Link
+                to={`/users/${experience.author._id}`}
+                style={{ color: "inherit", textDecoration: "underline" }}
+              >
+                {experience.author?.name || "Senior"}
+              </Link>
+            )}
           </span>
           {!experience.isAnonymous && (
             <span className="badge badge-cyan">Verified Senior</span>
