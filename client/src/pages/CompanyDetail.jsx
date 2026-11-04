@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
+import QATab from "../components/QATab";
 import "../styles/companies.css";
 
 // Helper: Format package range
@@ -414,15 +415,8 @@ const CompanyDetail = () => {
         </div>
       )}
 
-      {/* TAB 3: Q&A (PLACEHOLDER) */}
-      {activeTab === "qa" && (
-        <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-          <h3 style={{ marginBottom: 8, color: "var(--navy)" }}>Questions & Answers</h3>
-          <p style={{ color: "var(--muted)", fontSize: "0.95rem" }}>
-            Q&A coming in the next step.
-          </p>
-        </div>
-      )}
+      {/* TAB 3: Q&A */}
+      {activeTab === "qa" && <QATab companyId={id} />}
     </div>
   );
 };

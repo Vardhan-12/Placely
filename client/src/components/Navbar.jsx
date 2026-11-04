@@ -79,16 +79,20 @@ const Navbar = () => {
             >
               Companies
             </Link>
-            <Link
-              to="/qa"
-              style={{
-                color: "rgba(255, 255, 255, 0.85)",
-                fontSize: "0.95rem",
-                fontWeight: 500,
-              }}
-            >
-              Q&A
-            </Link>
+
+            {/* Saved bookmarks navigation */}
+            {isAuthenticated && (
+              <Link
+                to="/bookmarks"
+                style={{
+                  color: "rgba(255, 255, 255, 0.85)",
+                  fontSize: "0.95rem",
+                  fontWeight: 500,
+                }}
+              >
+                Saved
+              </Link>
+            )}
 
             {/* Senior-specific navigation */}
             {isAuthenticated && user?.role === "senior" && (

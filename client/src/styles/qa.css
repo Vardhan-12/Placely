@@ -1,0 +1,236 @@
+/* qa.css - Styles for Q&A Tab and Bookmarks page (Desktop layout) */
+
+/* ── Q&A Tab Container ── */
+.qa-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Ask Question Card ── */
+.qa-ask-card {
+  padding: 24px;
+}
+
+.qa-ask-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.qa-ask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.qa-char-count {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.qa-login-hint {
+  padding: 16px 20px;
+  background-color: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ── Questions List ── */
+.qa-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.qa-question-card {
+  padding: 20px 24px;
+  transition: border-color 0.15s ease;
+}
+
+.qa-question-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.qa-question-main {
+  flex: 1;
+}
+
+.qa-question-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.qa-question-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.qa-expand-indicator {
+  font-size: 0.85rem;
+  color: var(--blue);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Expanded Section: Answers ── */
+.qa-answers-expanded {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.qa-answer-card {
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  position: relative;
+}
+
+.qa-answer-card.is-best {
+  border-color: var(--success);
+  background-color: #f0fdf4;
+}
+
+.qa-answer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.qa-answer-author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.qa-answer-text {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-line;
+  margin-bottom: 12px;
+}
+
+.qa-answer-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Answer Form ── */
+.qa-answer-form-wrapper {
+  margin-top: 16px;
+  padding: 18px 20px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.qa-answer-form-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.qa-senior-pending-notice {
+  font-size: 0.88rem;
+  color: var(--muted);
+  font-style: italic;
+  padding: 10px 14px;
+  background-color: var(--surface);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+}
+
+/* ── Bookmarks Page ── */
+.bookmarks-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 36px 16px;
+}
+
+.bookmarks-header {
+  margin-bottom: 24px;
+}
+
+.bookmarks-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 6px;
+}
+
+.bookmarks-subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.bookmarks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bookmark-card {
+  padding: 20px 24px;
+}
+
+.bookmark-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.bookmark-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bookmark-company {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.bookmark-role-year {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.bookmark-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
