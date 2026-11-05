@@ -12,6 +12,7 @@ const experienceRoutes = require("./routes/experienceRoutes"); // Task 6: experi
 const qaRoutes = require("./routes/qaRoutes");                 // Task 7: Q&A routes
 const bookmarkRoutes = require("./routes/bookmarkRoutes");     // Task 8: bookmark routes
 const userRoutes = require("./routes/userRoutes");             // Task 8: public user profile routes
+const aiRoutes = require("./routes/aiRoutes");                 // Task 15: AI summary routes
 
 const app = express();
 
@@ -50,6 +51,9 @@ app.use("/api/bookmarks", bookmarkRoutes);
 
 // --- Public User Routes (Task 8) ---
 app.use("/api/users", userRoutes);
+
+// --- AI Routes (Task 15) ---
+app.use("/api/ai", aiRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above

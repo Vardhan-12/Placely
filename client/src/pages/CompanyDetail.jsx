@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
 import QATab from "../components/QATab";
+import AISummary from "../components/AISummary";
 import "../styles/companies.css";
 
 // Helper: Format package range
@@ -255,6 +256,13 @@ const CompanyDetail = () => {
         >
           Q&A
         </button>
+        <button
+          type="button"
+          className={`tab-btn ${activeTab === "ai" ? "active" : ""}`}
+          onClick={() => setActiveTab("ai")}
+        >
+          AI Insights
+        </button>
       </div>
 
       {/* TAB 1: OVERVIEW */}
@@ -417,6 +425,9 @@ const CompanyDetail = () => {
 
       {/* TAB 3: Q&A */}
       {activeTab === "qa" && <QATab companyId={id} />}
+
+      {/* TAB 4: AI INSIGHTS */}
+      {activeTab === "ai" && <AISummary companyId={id} />}
     </div>
   );
 };

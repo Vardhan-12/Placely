@@ -1,0 +1,205 @@
+/* ai.css - Desktop-first styles for Company AI summary tab */
+
+.ai-summary-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header bar with meta and actions */
+.ai-summary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 24px;
+}
+
+.ai-summary-title {
+  margin: 0 0 6px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.ai-summary-subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.ai-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Clean cards for each AI section */
+.ai-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.ai-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 16px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ai-card-text {
+  color: var(--text);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Two-column grid for complementary cards */
+.ai-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Common rounds list */
+.ai-rounds-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-round-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: #fafafa;
+}
+
+.ai-round-name {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.ai-round-desc {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Top topics badges */
+.ai-topics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ai-topic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #3730a3;
+}
+
+.ai-topic-freq {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #4338ca;
+  font-weight: 600;
+}
+
+/* List items for tips, mistakes, resources */
+.ai-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ai-bullet-item {
+  position: relative;
+  padding-left: 20px;
+  line-height: 1.55;
+  font-size: 0.925rem;
+  color: var(--text);
+}
+
+.ai-bullet-item::before {
+  content: "•";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.ai-bullet-mistake::before {
+  color: var(--danger);
+}
+
+/* Numbered prep plan list */
+.ai-prep-list {
+  list-style: none;
+  counter-reset: prep-step;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ai-prep-step {
+  counter-increment: prep-step;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.925rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.ai-prep-number {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer note */
+.ai-summary-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  padding: 16px 0;
+}
+
