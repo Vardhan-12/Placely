@@ -20,6 +20,15 @@ api.interceptors.request.use(
     } catch (err) {
       console.error("Failed to read token from localStorage", err);
     }
+
+    // If payload is FormData, remove default "Content-Type" so browser sets multipart boundary
+    if (config.data instanceof FormData) {
+      if (config.headers) {
+        delete config.headers["Content-Type"];
+        delete config.headers["content-type"];
+      }
+    }
+
     return config;
   },
   (error) => Promise.reject(error)

@@ -38,7 +38,28 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       // Seniors need manual verification; juniors and admins are auto-verified
-      // The default is set dynamically in the pre-save hook below
+      // Kept in sync with verificationStatus: true only when approved
+    },
+
+    proofFile: {
+      type: String, // stored filename in uploads/proofs
+    },
+
+    proofUploadedAt: {
+      type: Date,
+    },
+
+    verificationStatus: {
+      type: String,
+      enum: {
+        values: ["pending", "approved", "rejected"],
+        message: "Status must be pending, approved, or rejected",
+      },
+    },
+
+    rejectionReason: {
+      type: String,
+      trim: true,
     },
 
     branch: {
@@ -74,9 +95,28 @@ const userSchema = new mongoose.Schema(
 // Runs before every .save() call
 // In Mongoose 8, pre hooks are async functions — do NOT use next() callback
 userSchema.pre("save", async function () {
-  // Set isVerified based on role (only when creating a new document)
+  // Sync verification status & isVerified
   if (this.isNew) {
-    this.isVerified = this.role !== "senior"; // senior → false, junior/admin → true
+    if (this.role === "senior") {
+      this.verificationStatus = this.verificationStatus || "pending";
+      this.isVerified = this.verificationStatus === "approved";
+    } else {
+      this.verificationStatus = "approved";
+      this.isVerified = true;
+    }
+  } else {
+    if (this.role === "senior") {
+      // If verificationStatus is set, sync isVerified
+      if (this.verificationStatus) {
+        this.isVerified = this.verificationStatus === "approved";
+      } else {
+        // For backwards compatibility with existing records
+        this.verificationStatus = this.isVerified ? "approved" : "pending";
+      }
+    } else {
+      this.isVerified = true;
+      this.verificationStatus = "approved";
+    }
   }
 
   // Only hash the password if it has been changed (or is new)

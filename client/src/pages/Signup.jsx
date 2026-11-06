@@ -16,6 +16,7 @@ const Signup = () => {
     adminCode: "",
   });
 
+  const [proofFile, setProofFile] = useState(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [seniorNotice, setSeniorNotice] = useState(false);
@@ -57,6 +58,20 @@ const Signup = () => {
         setError("Placed company and placed year are required for seniors.");
         return;
       }
+      if (!proofFile) {
+        setError("Proof document (offer letter or email screenshot) is required for senior verification.");
+        return;
+      }
+      // Client validation for proof file: PDF/JPG/PNG, max 5 MB
+      const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+      if (!allowedTypes.includes(proofFile.type)) {
+        setError("Invalid file type. Please upload a PDF, JPG, or PNG document.");
+        return;
+      }
+      if (proofFile.size > 5 * 1024 * 1024) {
+        setError("Proof file size must be less than 5 MB.");
+        return;
+      }
     }
 
     if (formData.role === "admin") {
@@ -68,21 +83,30 @@ const Signup = () => {
 
     setSubmitting(true);
     try {
-      const payload = {
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        password: formData.password,
-        role: formData.role,
-        branch: formData.branch.trim() || undefined,
-      };
+      let payload;
 
       if (formData.role === "senior") {
-        payload.placedCompany = formData.placedCompany.trim();
-        payload.placedYear = Number(formData.placedYear);
-      }
+        payload = new FormData();
+        payload.append("name", formData.name.trim());
+        payload.append("email", formData.email.trim());
+        payload.append("password", formData.password);
+        payload.append("role", formData.role);
+        if (formData.branch.trim()) payload.append("branch", formData.branch.trim());
+        payload.append("placedCompany", formData.placedCompany.trim());
+        payload.append("placedYear", formData.placedYear);
+        payload.append("proof", proofFile);
+      } else {
+        payload = {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          password: formData.password,
+          role: formData.role,
+          branch: formData.branch.trim() || undefined,
+        };
 
-      if (formData.role === "admin") {
-        payload.adminCode = formData.adminCode.trim();
+        if (formData.role === "admin") {
+          payload.adminCode = formData.adminCode.trim();
+        }
       }
 
       const res = await signup(payload);
@@ -250,6 +274,28 @@ const Signup = () => {
                     onChange={handleChange}
                     required
                   />
+                </div>
+
+                {/* Proof Upload Field */}
+                <div className="form-group">
+                  <label className="label" htmlFor="proof">
+                    Placement Proof Document * (PDF, JPG, PNG - max 5 MB)
+                  </label>
+                  <input
+                    id="proof"
+                    name="proof"
+                    type="file"
+                    accept=".pdf,image/jpeg,image/png"
+                    className="input"
+                    onChange={(e) => {
+                      setProofFile(e.target.files?.[0] || null);
+                      setError("");
+                    }}
+                    required
+                  />
+                  <p style={{ fontSize: "0.8rem", color: "var(--muted)", marginTop: 6, lineHeight: 1.4 }}>
+                    Used only by admins to verify your placement. Deleted after review.
+                  </p>
                 </div>
               </>
             )}

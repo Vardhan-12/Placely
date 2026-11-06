@@ -1,7 +1,11 @@
 // authController.js - Handles user signup and login
 
+const path = require("path");
+const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { notifyAllAdmins } = require("../services/notificationService");
+const { uploadDir } = require("../middleware/uploadProof");
 
 // --- Helper: Generate a signed JWT ---
 // Payload contains user's id and role (used by protect middleware later)
@@ -71,12 +75,23 @@ const signup = async (req, res, next) => {
       }
     }
 
-    // Senior validation: placedCompany and placedYear are required
+    // Senior validation: placedCompany, placedYear, and proof file are required
     if (userRole === "senior") {
       if (!placedCompany || !placedCompany.toString().trim() || placedYear === undefined || placedYear === null || placedYear === "") {
+        // Cleanup uploaded file if text validation fails
+        if (req.file) {
+          try { fs.unlinkSync(req.file.path); } catch (e) {}
+        }
         return res.status(400).json({
           success: false,
           message: "placedCompany and placedYear are required for senior signup",
+        });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "Proof document (PDF, JPG, or PNG up to 5 MB) is required for senior verification",
         });
       }
     }
@@ -90,7 +105,19 @@ const signup = async (req, res, next) => {
       branch: branch ? branch.trim() : undefined,
       placedCompany: placedCompany ? placedCompany.toString().trim() : undefined,
       placedYear: placedYear ? Number(placedYear) : undefined,
+      proofFile: userRole === "senior" && req.file ? req.file.filename : undefined,
+      proofUploadedAt: userRole === "senior" && req.file ? new Date() : undefined,
+      verificationStatus: userRole === "senior" ? "pending" : "approved",
     });
+
+    // Notify all admins of the new senior verification request
+    if (userRole === "senior") {
+      await notifyAllAdmins({
+        message: `New senior verification request: ${user.name} (${user.placedCompany})`,
+        link: "/admin",
+        type: "senior_signup",
+      });
+    }
 
     // Generate JWT for the new user
     const token = generateToken(user._id, user.role);
@@ -108,6 +135,8 @@ const signup = async (req, res, next) => {
         placedCompany: user.placedCompany,
         placedYear: user.placedYear,
         isVerified: user.isVerified,
+        verificationStatus: user.verificationStatus,
+        rejectionReason: user.rejectionReason,
         createdAt: user.createdAt,
       },
     });
@@ -168,7 +197,12 @@ const login = async (req, res, next) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        branch: user.branch,
+        placedCompany: user.placedCompany,
+        placedYear: user.placedYear,
         isVerified: user.isVerified,
+        verificationStatus: user.verificationStatus,
+        rejectionReason: user.rejectionReason,
         createdAt: user.createdAt,
       },
     });
@@ -177,4 +211,77 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login };
+// ─────────────────────────────────────────────
+// @route   POST /api/auth/resubmit-proof
+// @desc    Resubmit proof document for rejected/pending seniors
+// @access  Private — Senior
+// ─────────────────────────────────────────────
+const resubmitProof = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Proof document (PDF, JPG, or PNG up to 5 MB) is required",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user || user.role !== "senior") {
+      // delete uploaded file if not senior
+      if (req.file) {
+        try { fs.unlinkSync(req.file.path); } catch (e) {}
+      }
+      return res.status(403).json({
+        success: false,
+        message: "Only seniors can upload verification proof",
+      });
+    }
+
+    // Delete old file if exists
+    if (user.proofFile) {
+      const oldFilePath = path.join(uploadDir, user.proofFile);
+      if (fs.existsSync(oldFilePath)) {
+        try { fs.unlinkSync(oldFilePath); } catch (e) {}
+      }
+    }
+
+    user.proofFile = req.file.filename;
+    user.proofUploadedAt = new Date();
+    user.verificationStatus = "pending";
+    user.isVerified = false;
+    user.rejectionReason = undefined;
+
+    await user.save();
+
+    // Notify all admins of the resubmission
+    await notifyAllAdmins({
+      message: `Senior verification resubmission: ${user.name} (${user.placedCompany || "Senior"})`,
+      link: "/admin",
+      type: "senior_resubmission",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Proof resubmitted successfully. Under review by admins.",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        branch: user.branch,
+        placedCompany: user.placedCompany,
+        placedYear: user.placedYear,
+        isVerified: user.isVerified,
+        verificationStatus: user.verificationStatus,
+        rejectionReason: user.rejectionReason,
+      },
+    });
+  } catch (err) {
+    if (req.file) {
+      try { fs.unlinkSync(req.file.path); } catch (e) {}
+    }
+    next(err);
+  }
+};
+
+module.exports = { signup, login, resubmitProof };

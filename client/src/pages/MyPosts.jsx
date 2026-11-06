@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
+import SeniorVerificationCard from "../components/SeniorVerificationCard";
 import "../styles/experiences.css";
 import "../styles/qa.css";
 
@@ -221,13 +222,8 @@ const MyPosts = () => {
 
   return (
     <div className="exp-container">
-      {/* Pending verification banner */}
-      {!user?.isVerified && (
-        <div className="senior-pending-banner">
-          <strong>Notice:</strong> Your account is pending admin verification. You can
-          prepare drafts, but you cannot post or answer yet.
-        </div>
-      )}
+      {/* Senior Verification / Rejection / Re-upload Notice */}
+      <SeniorVerificationCard />
 
       {/* Page Header */}
       <div className="my-posts-header">

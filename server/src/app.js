@@ -13,6 +13,7 @@ const qaRoutes = require("./routes/qaRoutes");                 // Task 7: Q&A ro
 const bookmarkRoutes = require("./routes/bookmarkRoutes");     // Task 8: bookmark routes
 const userRoutes = require("./routes/userRoutes");             // Task 8: public user profile routes
 const aiRoutes = require("./routes/aiRoutes");                 // Task 15: AI summary routes
+const notificationRoutes = require("./routes/notificationRoutes"); // Task 19: Notifications
 
 const app = express();
 
@@ -54,6 +55,9 @@ app.use("/api/users", userRoutes);
 
 // --- AI Routes (Task 15) ---
 app.use("/api/ai", aiRoutes);
+
+// --- Notification Routes (Task 19) ---
+app.use("/api/notifications", notificationRoutes);
 
 // --- 404 Handler ---
 // Catches any request that didn't match a route above

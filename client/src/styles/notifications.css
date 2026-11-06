@@ -1,0 +1,241 @@
+/* notifications.css - In-app notification bell, popover dropdown, and badge styling */
+
+.notif-bell-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notif-bell-btn {
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #ffffff;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.notif-bell-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #dc2626;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #102a43;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 360px;
+  max-width: 90vw;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: var(--radius, 8px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  color: var(--text, #1e293b);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeInDown 0.15s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notif-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  background: #f8fafc;
+}
+
+.notif-dropdown-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.notif-mark-all-btn {
+  background: none;
+  border: none;
+  color: var(--blue, #2563eb);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.notif-mark-all-btn:hover {
+  text-decoration: underline;
+}
+
+.notif-list {
+  max-height: 380px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notif-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border, #e2e8f0);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notif-item:last-child {
+  border-bottom: none;
+}
+
+.notif-item:hover {
+  background: #f1f5f9;
+}
+
+.notif-item.unread {
+  background: #eff6ff;
+}
+
+.notif-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue, #2563eb);
+}
+
+.notif-msg {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text, #1e293b);
+  word-break: break-word;
+}
+
+.notif-time {
+  font-size: 0.72rem;
+  color: var(--muted, #64748b);
+}
+
+.notif-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--muted, #64748b);
+  font-size: 0.85rem;
+}
+
+/* Nav admin pending badge */
+.nav-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--warning, #f59e0b);
+  color: #1e293b;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+
+/* Proof Re-upload Form card in Profile and MyPosts */
+.proof-status-card {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: var(--radius, 8px);
+  padding: 18px 20px;
+  background: #f8fafc;
+  margin-bottom: 20px;
+}
+
+.proof-status-card.rejected {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.proof-status-card.pending {
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.proof-status-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.proof-status-card.rejected .proof-status-title {
+  color: #991b1b;
+}
+
+.proof-status-card.pending .proof-status-title {
+  color: #92400e;
+}
+
+.proof-reason-box {
+  background: #ffffff;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  color: #7f1d1d;
+  margin: 10px 0 14px 0;
+  line-height: 1.5;
+}
+
+.proof-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proof-file-input {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+

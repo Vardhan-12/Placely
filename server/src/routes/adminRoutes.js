@@ -7,6 +7,7 @@ const {
   getSeniors,
   approveSenior,
   rejectSenior,
+  streamSeniorProof,
   getStats,
 } = require("../controllers/adminController");
 
@@ -18,6 +19,7 @@ router.use(protect, authorizeRoles("admin"));
 
 router.get("/stats", getStats);
 router.get("/seniors", getSeniors);
+router.get("/seniors/:id/proof", streamSeniorProof);
 router.patch("/seniors/:id/approve", approveSenior);
 router.patch("/seniors/:id/reject", rejectSenior);
 

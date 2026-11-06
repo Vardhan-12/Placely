@@ -1,12 +1,35 @@
 // Navbar.jsx - Top navigation header with role-based links and auth actions
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import NotificationBell from "./NotificationBell";
+import api from "../api/axios";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [adminPendingCount, setAdminPendingCount] = useState(0);
+
+  // For admins, poll pending senior requests count
+  useEffect(() => {
+    if (isAuthenticated && user?.role === "admin") {
+      const fetchAdminStats = async () => {
+        try {
+          const res = await api.get("/admin/stats");
+          if (res.data?.success && res.data?.data) {
+            setAdminPendingCount(res.data.data.pendingSeniors || 0);
+          }
+        } catch (err) {
+          // ignore background stat error
+        }
+      };
+
+      fetchAdminStats();
+      const interval = setInterval(fetchAdminStats, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, user?.role]);
 
   const handleLogout = () => {
     logout();
@@ -128,9 +151,16 @@ const Navbar = () => {
                   color: "rgba(255, 255, 255, 0.85)",
                   fontSize: "0.95rem",
                   fontWeight: 500,
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
                 Dashboard
+                {adminPendingCount > 0 && (
+                  <span className="nav-pending-badge" title={`${adminPendingCount} pending verification request(s)`}>
+                    {adminPendingCount}
+                  </span>
+                )}
               </Link>
             )}
           </nav>
@@ -140,6 +170,9 @@ const Navbar = () => {
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           {isAuthenticated ? (
             <>
+              {/* Notification Bell */}
+              <NotificationBell />
+
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <Link
                   to="/profile"

@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
+import SeniorVerificationCard from "../components/SeniorVerificationCard";
 import "../styles/profile.css";
 
 const getRoleBadgeClass = (role) => {
@@ -56,6 +57,9 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="card profile-card">
+        {/* Verification Status Notice for Seniors */}
+        <SeniorVerificationCard />
+
         <div className="profile-header">
           <div>
             <h1 className="profile-name">{authUser.name}</h1>
