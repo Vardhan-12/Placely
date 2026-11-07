@@ -1,170 +1,196 @@
+<div align="center">
+
 # Placely
 
-Placely is a dedicated campus placement preparation and knowledge-sharing platform that bridges the gap between aspiring students and placed seniors. It enables verified seniors to share authentic round-by-round interview experiences, compensation details, and preparation tips while empowering juniors to browse company archives, ask targeted questions, and consume AI-generated hiring insights.
+### Learn from seniors who cracked it. Prepare for your campus placements with real, verified experiences.
+
+**Built by [Bala Vardhan Utla](<your-github-link>)** · B.Tech CSE, Lovely Professional University
+
+![React](https://img.shields.io/badge/React-Vite-2563EB?style=flat-square&logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-102A43?style=flat-square&logo=nodedotjs&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-06B6D4?style=flat-square&logo=mongodb&logoColor=white)
+![JWT](https://img.shields.io/badge/Auth-JWT-2563EB?style=flat-square)
+![AI](https://img.shields.io/badge/AI-Gemini%20%2B%20Groq-102A43?style=flat-square)
+
+[Live Demo](<your-vercel-link>) · [Report a Bug](<your-repo-link>/issues)
+
+</div>
 
 ---
 
-## Features by Role
+## About
 
-### Junior
-- **Browse & Search**: Explore companies, eligibility requirements, selection patterns, CTC packages, and interview rounds.
-- **Read Experiences**: Read comprehensive, round-by-round interview experiences shared by seniors.
-- **Bookmarks**: Save important interview experiences for quick reference during placement preparation.
-- **Ask Questions**: Post company-specific interview questions on Q&A discussion tabs.
-- **AI Summary**: View instant AI-generated synthesis of multiple interview experiences per company.
-- **Public Profiles**: Browse seniors' placed companies, credentials, and published experiences.
+Campus placements repeat every year: the same companies visit with similar rounds, yet the knowledge lives in scattered WhatsApp groups and disappears when seniors graduate.
 
-### Senior
-- **Verification Workflow**: Upload proof of placement (offer letter or email screenshot) during registration or re-upload upon rejection.
-- **Post Experiences**: Publish detailed placement stories covering preparation strategies, difficulty levels, round descriptions, and tips.
-- **Manage Experiences**: Create, edit, and delete personal interview experience posts.
-- **Answer Questions**: Provide verified answers to junior questions and earn best-answer recognitions.
-- **Profile & Status**: Track proof verification status with live in-app notifications.
+**Placely** is a placement experience portal where **verified seniors** share company-wise interview experiences, and **juniors** read them, ask questions, and prepare with real data. Seniors prove their placement with an offer document, an admin reviews it, and only then can they post. That keeps the content trustworthy.
+
+## Developer
+
+**Bala Vardhan Utla**
+B.Tech Computer Science and Engineering, Lovely Professional University
+
+- GitHub: `<your-github-link>`
+- LinkedIn: `<your-linkedin-link>`
+
+Designed, built, tested and deployed end to end as a full-stack MERN project.
+
+## Features
+
+### Junior (student)
+- Browse companies with search, filters and sorting
+- Read round-by-round interview experiences with difficulty, topics, tips and mistakes
+- Upvote and bookmark experiences
+- Ask company-specific questions, and mark the best answer
+- Generate an AI summary of a company's experiences
+
+### Senior (placed student)
+- Sign up with placement proof (PDF, JPG or PNG)
+- Get notified when verified or rejected, and re-upload proof if rejected
+- Post experiences with dynamic rounds, optionally anonymously
+- Manage posts in **My Posts** (edit, delete)
+- Answer juniors' questions from a **Questions for Me** inbox
 
 ### Admin
-- **Senior Approvals**: Review uploaded placement proof documents, approve verified seniors, or reject with custom feedback reasons.
-- **Company Management**: Create, edit, update eligibility criteria, packages, and manage company listings.
-- **Experience Moderation**: Oversee, monitor, and remove inappropriate or policy-violating interview experiences.
-- **Platform Analytics**: Monitor platform user distribution, verified counts, and post activity.
+- Review pending seniors, view their proof, approve, or reject with a reason
+- Add, edit and delete companies and their rounds
+- Moderate experiences and see platform statistics
+- Receive notifications for new verification requests
 
----
+## Highlights
+
+| | |
+|---|---|
+| **Proof-based verification** | Seniors are approved only after an admin reviews their document |
+| **In-app notifications** | Bell with unread count for verification updates and requests |
+| **Anonymous posting** | The author's identity is hidden on the server, not only in the UI |
+| **AI company summary** | Gemini summarizes common rounds, topics, tips and mistakes, with a Groq fallback and database caching |
+| **Dark and light theme** | Saved preference, follows the system default |
+| **Live refresh** | Status and lists refresh on focus and on an interval, so there is no need to log in again |
 
 ## Tech Stack
 
-- **Frontend**: React 18, React Router v6, Axios, Vite, Vanilla CSS with custom design system and dark/light themes.
-- **Backend**: Node.js, Express.js (REST API architecture).
-- **Database**: MongoDB with Mongoose ODM.
-- **Authentication & Security**: JSON Web Tokens (JWT), bcryptjs, Helmet, Express Rate Limit, Multer file upload filters, CORS whitelist.
-- **AI Integration**: Google Gemini API with automatic Groq (Llama) fallback and MongoDB caching.
+| Layer | Technology |
+|---|---|
+| Frontend | React (Vite), React Router, Axios, plain CSS with design tokens |
+| Backend | Node.js, Express |
+| Database | MongoDB Atlas with Mongoose |
+| Authentication | JWT, bcrypt, role-based middleware (junior, senior, admin) |
+| File uploads | Multer with type and size validation |
+| AI | Google Gemini (primary), Groq (fallback), cached summaries |
+| Security | Helmet, rate limiting, CORS allow-list |
 
----
-
-## AI Feature
-
-Placely features an intelligent company interview summarizer:
-- **Engine**: Primary generation powered by Google Gemini API with automated fallback to Groq when quota or rate limits are reached.
-- **Cached Architecture**: Summaries are cached in MongoDB with hash signatures of underlying experiences so costly LLM calls only run when new experiences are published or existing ones are modified.
-- **Structure**: Generates round breakdowns, common technical and HR themes, difficulty ratings, and high-impact preparation recommendations.
-
----
-
-## Folder Structure
+## Architecture
 
 ```
-PLACELY/
-├── client/
-│   ├── public/
-│   ├── src/
-│   │   ├── api/            # Axios instance and interceptors
-│   │   ├── components/     # Reusable UI components (Navbar, Toast, Skeleton, Q&A, etc.)
-│   │   ├── context/        # Auth, Theme, and Toast contexts
-│   │   ├── hooks/          # Custom hooks (page title, responsive helpers)
-│   │   ├── pages/          # Application views & Admin dashboard
-│   │   ├── styles/         # Global styles, variables, theme definitions
-│   │   ├── App.jsx         # App router and layout
-│   │   └── main.jsx        # Entry point
-│   ├── .env.example
-│   ├── vercel.json
-│   └── package.json
-├── server/
-│   ├── src/
-│   │   ├── config/         # Database and third-party configs
-│   │   ├── controllers/    # Request handlers for auth, companies, experiences, QA, AI
-│   │   ├── middleware/     # Auth, role check, upload, error handler, rate limiters
-│   │   ├── models/         # Mongoose schemas (User, Company, Experience, Question, etc.)
-│   │   ├── routes/         # Express route definitions
-│   │   ├── utils/          # AI providers and helper functions
-│   │   └── app.js          # Express app configuration
-│   ├── uploads/            # Local document storage for proof validation
-│   ├── server.js           # Server bootstrap and database connection
-│   ├── .env.example
-│   └── package.json
-└── README.md
+placely/
+├── client/                 React app
+│   └── src/
+│       ├── api/            Axios instance
+│       ├── components/     Navbar, bell, tabs, shared UI
+│       ├── context/        Auth and theme providers
+│       ├── hooks/          Auto-refresh hook
+│       ├── pages/          Home, Companies, Experiences, Admin, Profile
+│       └── styles/         Design tokens and page styles
+└── server/                 Express API
+    └── src/
+        ├── config/         Database connection
+        ├── controllers/    Request logic
+        ├── middleware/     Auth, roles, uploads, errors
+        ├── models/         Mongoose schemas
+        ├── routes/         URL definitions
+        └── services/       AI provider calls
 ```
 
----
+**Request flow:** React → Axios → Express → middleware (auth, role, validation) → controller → Mongoose → MongoDB
 
-## Setup Steps
+## Getting Started
 
-### 1. Backend (Server)
+### Prerequisites
+- Node.js 18 or later
+- A MongoDB Atlas cluster (free tier is enough)
+- Optional: a Gemini API key and a Groq API key for the AI summary
+
+### Run locally
 
 ```bash
+# 1. Clone
+git clone <your-repo-link>
+cd placely
+
+# 2. Backend
 cd server
 npm install
-```
-
-Create `.env` inside `server/` (see `server/.env.example`):
-```env
-PORT
-MONGO_URI
-JWT_SECRET
-JWT_EXPIRES_IN
-ADMIN_SIGNUP_CODE
-GEMINI_API_KEY
-GEMINI_MODEL
-GROQ_API_KEY
-GROQ_MODEL
-CLIENT_URL
-```
-
-Run commands:
-```bash
-# Development mode
+cp .env.example .env      # then fill in your own values
 npm run dev
 
-# Production mode
-npm start
-```
-
-### 2. Frontend (Client)
-
-```bash
+# 3. Frontend (new terminal)
 cd client
 npm install
-```
-
-Create `.env` inside `client/` (see `client/.env.example`):
-```env
-VITE_API_URL
-```
-
-Run commands:
-```bash
-# Development server
 npm run dev
-
-# Production build
-npm run build
 ```
 
----
+The frontend runs on `http://localhost:5173` and proxies `/api` to the backend on port 5000.
 
-## Security Notes
+### Environment variables
 
-- **JWT Authentication**: Stateless authentication with tokens stored securely on the client and validated on protected endpoints via Authorization Bearer headers.
-- **Password Hashing**: Passwords are encrypted using `bcryptjs` with salt rounds prior to persistence.
-- **Role-Based Access Control**: Strict `authorizeRoles` middleware guarantees route isolation among juniors, seniors, and administrators.
-- **Verification Guard**: Verified middleware restricts interview publishing and senior answering strictly to approved seniors.
-- **File Upload Protection**: Multer enforces strict MIME-type whitelisting (PDF, JPEG, PNG), a 5 MB maximum file size limit, and randomized UUID/crypto storage names to prevent path traversal.
-- **Rate Limiting & Headers**: `express-rate-limit` prevents brute-force login/signup attacks, `helmet` configures essential HTTP security headers, and JSON request bodies are capped at 100kb.
+**server/.env**
 
----
+| Name | Purpose |
+|---|---|
+| `PORT` | Server port |
+| `MONGO_URI` | MongoDB Atlas connection string |
+| `JWT_SECRET` | Secret used to sign tokens |
+| `JWT_EXPIRES_IN` | Token lifetime, for example `7d` |
+| `ADMIN_SIGNUP_CODE` | Invite code required to create an admin account |
+| `CLIENT_URL` | Allowed frontend origin(s) for CORS |
+| `GEMINI_API_KEY` | Gemini API key |
+| `GEMINI_MODEL` | Primary Gemini model name |
+| `GEMINI_FALLBACK_MODEL` | Lighter Gemini model used if the primary is busy |
+| `GROQ_API_KEY` | Groq API key (second fallback) |
+| `GROQ_MODEL` | Groq model name |
+
+**client/.env**
+
+| Name | Purpose |
+|---|---|
+| `VITE_API_URL` | Backend API base URL in production |
+
+> Never commit `.env` files. Only `.env.example` files with empty values belong in the repository.
+
+## Security
+
+- Passwords are hashed with **bcrypt** before storage and never returned
+- **JWT** authentication; the user is re-loaded from the database on every protected request
+- **Role middleware** separates junior, senior and admin actions
+- Admin accounts can only be created with a server-side **invite code**
+- Placement proofs are validated for type and size, stored under random names, and viewable only by admins
+- Anonymous authors are hidden by the API itself
+- **Helmet**, request size limits, and **rate limiting** on login and signup
+- Secrets live only in environment variables
 
 ## Screenshots
 
-<!-- Add screenshots below by updating image sources -->
-- **Home & Company Directory**: `![Home Page](screenshots/home.png)`
-- **Experience View & Round Breakdown**: `![Experience Details](screenshots/experience-detail.png)`
-- **AI Placement Insights**: `![AI Summary Card](screenshots/ai-summary.png)`
-- **Senior Proof Upload & Admin Review**: `![Admin Verification](screenshots/admin-seniors.png)`
-- **Company Q&A Discussion**: `![QA Discussion](screenshots/qa-tab.png)`
-- **Light & Dark Theme**: `![Theme Toggle](screenshots/theme-preview.png)`
+| Home | Companies |
+|---|---|
+| `<add screenshot>` | `<add screenshot>` |
 
----
+| Experience | AI Insights |
+|---|---|
+| `<add screenshot>` | `<add screenshot>` |
+
+| Admin Dashboard | Dark Mode |
+|---|---|
+| `<add screenshot>` | `<add screenshot>` |
 
 ## Future Work
 
-- **Threaded Replies**: Multi-level nested replies and thread discussions on Q&A answers.
-- **Advanced Analytics**: Placement trends, package percentiles, and preparation success analytics dashboards.
-- **Cloud Proof Storage**: Migration from local disk storage to cloud storage (e.g. AWS S3 or Cloudinary) with signed URLs.
-- **Email Notifications**: Transactional emails for proof approval/rejection notices and responses to questions.
+- Threaded replies in Q&A
+- Analytics charts per company (result split, difficulty, topic frequency)
+- Cloud storage for placement proofs
+- Email notifications
+- Sign in with Google restricted to college email domains
+
+## Credits
+
+Created by **Bala Vardhan Utla** as a full-stack MERN project at Lovely Professional University.
+Demo data in screenshots is sample data and does not represent real students.
