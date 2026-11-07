@@ -1,9 +1,10 @@
 // Navbar.jsx - Top navigation header with role-based links and auth actions
 
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import NotificationBell from "./NotificationBell";
+import ThemeToggle from "./ThemeToggle";
 import api from "../api/axios";
 
 const Navbar = () => {
@@ -50,9 +51,9 @@ const Navbar = () => {
   return (
     <header
       style={{
-        backgroundColor: "var(--navy)",
-        color: "#ffffff",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        backgroundColor: "var(--navbar-bg)",
+        color: "var(--navbar-text)",
+        borderBottom: "1px solid var(--navbar-border)",
       }}
     >
       <div
@@ -72,7 +73,7 @@ const Navbar = () => {
             style={{
               fontSize: "1.35rem",
               fontWeight: 700,
-              color: "#ffffff",
+              color: "var(--navbar-text)",
               display: "flex",
               alignItems: "center",
             }}
@@ -82,78 +83,90 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <Link
+            <NavLink
               to="/"
-              style={{
-                color: "rgba(255, 255, 255, 0.85)",
+              style={({ isActive }) => ({
+                color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                 fontSize: "0.95rem",
-                fontWeight: 500,
-              }}
+                fontWeight: isActive ? 600 : 500,
+                borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                padding: "6px 0",
+              })}
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/companies"
-              style={{
-                color: "rgba(255, 255, 255, 0.85)",
+              style={({ isActive }) => ({
+                color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                 fontSize: "0.95rem",
-                fontWeight: 500,
-              }}
+                fontWeight: isActive ? 600 : 500,
+                borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                padding: "6px 0",
+              })}
             >
               Companies
-            </Link>
+            </NavLink>
 
             {/* Junior-specific navigation */}
             {isAuthenticated && user?.role === "junior" && (
-              <Link
+              <NavLink
                 to="/bookmarks"
-                style={{
-                  color: "rgba(255, 255, 255, 0.85)",
+                style={({ isActive }) => ({
+                  color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                   fontSize: "0.95rem",
-                  fontWeight: 500,
-                }}
+                  fontWeight: isActive ? 600 : 500,
+                  borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                  padding: "6px 0",
+                })}
               >
                 Saved
-              </Link>
+              </NavLink>
             )}
 
             {/* Senior-specific navigation */}
             {isAuthenticated && user?.role === "senior" && (
               <>
-                <Link
+                <NavLink
                   to="/experiences/new"
-                  style={{
-                    color: "rgba(255, 255, 255, 0.85)",
+                  style={({ isActive }) => ({
+                    color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                     fontSize: "0.95rem",
-                    fontWeight: 500,
-                  }}
+                    fontWeight: isActive ? 600 : 500,
+                    borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                    padding: "6px 0",
+                  })}
                 >
                   Write Experience
-                </Link>
-                <Link
+                </NavLink>
+                <NavLink
                   to="/my-posts"
-                  style={{
-                    color: "rgba(255, 255, 255, 0.85)",
+                  style={({ isActive }) => ({
+                    color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                     fontSize: "0.95rem",
-                    fontWeight: 500,
-                  }}
+                    fontWeight: isActive ? 600 : 500,
+                    borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                    padding: "6px 0",
+                  })}
                 >
                   My Posts
-                </Link>
+                </NavLink>
               </>
             )}
 
             {/* Admin-specific navigation */}
             {isAuthenticated && user?.role === "admin" && (
-              <Link
+              <NavLink
                 to="/admin"
-                style={{
-                  color: "rgba(255, 255, 255, 0.85)",
+                style={({ isActive }) => ({
+                  color: isActive ? "var(--cyan)" : "var(--navbar-link)",
                   fontSize: "0.95rem",
-                  fontWeight: 500,
+                  fontWeight: isActive ? 600 : 500,
                   display: "flex",
                   alignItems: "center",
-                }}
+                  borderBottom: isActive ? "2px solid var(--cyan)" : "2px solid transparent",
+                  padding: "6px 0",
+                })}
               >
                 Dashboard
                 {adminPendingCount > 0 && (
@@ -161,13 +174,16 @@ const Navbar = () => {
                     {adminPendingCount}
                   </span>
                 )}
-              </Link>
+              </NavLink>
             )}
           </nav>
         </div>
 
-        {/* Auth Actions */}
+        {/* Auth Actions & Theme Toggle */}
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
+
           {isAuthenticated ? (
             <>
               {/* Notification Bell */}
@@ -178,7 +194,7 @@ const Navbar = () => {
                   to="/profile"
                   style={{
                     fontSize: "0.9rem",
-                    color: "#ffffff",
+                    color: "var(--navbar-text)",
                     fontWeight: 500,
                     textDecoration: "none",
                   }}

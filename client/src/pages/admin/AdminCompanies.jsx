@@ -10,7 +10,8 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import api from "../../api/axios";
-import Spinner from "../../components/Spinner";
+import { TableSkeleton } from "../../components/Skeleton";
+import { useToast } from "../../context/ToastContext";
 
 const ROUND_TYPES = ["aptitude", "coding", "technical", "hr", "other"];
 
@@ -47,7 +48,7 @@ const formFromCompany = (c) => ({
 const AdminCompanies = () => {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading]     = useState(true);
-  const [toast, setToast]         = useState(null);
+  const toast                     = useToast();
 
   // Modal state
   const [modalOpen, setModalOpen]     = useState(false);
@@ -59,22 +60,17 @@ const AdminCompanies = () => {
   // Deletion
   const [deletingId, setDeletingId] = useState(null);
 
-  const showToast = (type, msg) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 4000);
-  };
-
   const fetchCompanies = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get("/companies?sort=name");
       setCompanies(res.data?.data || []);
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to load companies.");
+      toast.error(err.response?.data?.message || "Failed to load companies.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => { fetchCompanies(); }, [fetchCompanies]);
 
@@ -160,10 +156,10 @@ const AdminCompanies = () => {
     try {
       if (editTarget) {
         await api.put(`/companies/${editTarget._id}`, payload);
-        showToast("success", "Company updated.");
+        toast.success("Company updated.");
       } else {
         await api.post("/companies", payload);
-        showToast("success", "Company created.");
+        toast.success("Company created.");
       }
       closeModal();
       await fetchCompanies();
@@ -180,10 +176,10 @@ const AdminCompanies = () => {
     setDeletingId(company._id);
     try {
       const res = await api.delete(`/companies/${company._id}`);
-      showToast("success", res.data?.message || "Company deleted.");
+      toast.success(res.data?.message || "Company deleted.");
       await fetchCompanies();
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to delete company.");
+      toast.error(err.response?.data?.message || "Failed to delete company.");
     } finally {
       setDeletingId(null);
     }
@@ -203,12 +199,8 @@ const AdminCompanies = () => {
         </button>
       </div>
 
-      {toast && (
-        <div className={`admin-toast admin-toast-${toast.type}`}>{toast.msg}</div>
-      )}
-
       {loading ? (
-        <Spinner message="Loading companies..." />
+        <TableSkeleton rows={5} cols={5} />
       ) : companies.length === 0 ? (
         <div className="admin-empty">No companies yet. Add one above.</div>
       ) : (

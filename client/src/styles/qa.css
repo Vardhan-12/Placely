@@ -10,12 +10,13 @@
 /* ── Ask Question Card ── */
 .qa-ask-card {
   padding: 24px;
+  box-shadow: var(--shadow);
 }
 
 .qa-ask-title {
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 12px;
 }
 
@@ -52,6 +53,7 @@
 .qa-question-card {
   padding: 20px 24px;
   transition: border-color 0.15s ease;
+  box-shadow: var(--shadow);
 }
 
 .qa-question-header {
@@ -69,7 +71,7 @@
 .qa-question-text {
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--text);
   line-height: 1.4;
   margin-bottom: 8px;
 }
@@ -111,7 +113,7 @@
 
 .qa-answer-card.is-best {
   border-color: var(--success);
-  background-color: #f0fdf4;
+  background-color: var(--badge-success-bg);
 }
 
 .qa-answer-header {
@@ -127,6 +129,7 @@
   gap: 8px;
   font-size: 0.9rem;
   font-weight: 600;
+  color: var(--text);
 }
 
 .qa-answer-text {
@@ -150,12 +153,13 @@
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .qa-answer-form-title {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 10px;
 }
 
@@ -183,7 +187,7 @@
 .bookmarks-title {
   font-size: 1.75rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin: 0 0 6px;
 }
 
@@ -201,6 +205,7 @@
 
 .bookmark-card {
   padding: 20px 24px;
+  box-shadow: var(--shadow);
 }
 
 .bookmark-card-body {
@@ -219,7 +224,7 @@
 .bookmark-company {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
 }
 
 .bookmark-role-year {
@@ -236,10 +241,10 @@
 
 /* ── Verification Banner & My Posts Tabs ── */
 .senior-pending-banner {
-  background-color: #fffbeb;
-  border: 1px solid #fef3c7;
+  background-color: var(--alert-warn-bg);
+  border: 1px solid var(--alert-warn-border);
   border-left: 4px solid var(--warning);
-  color: #92400e;
+  color: var(--alert-warn-text);
   padding: 14px 18px;
   border-radius: var(--radius);
   margin-bottom: 24px;
@@ -268,7 +273,7 @@
 }
 
 .myposts-tab-btn:hover {
-  color: var(--navy);
+  color: var(--text);
 }
 
 .myposts-tab-btn.active {
@@ -295,14 +300,12 @@
 }
 
 .myposts-subtab-btn:hover {
-  border-color: var(--navy);
-  color: var(--navy);
+  border-color: var(--blue);
+  color: var(--blue);
 }
 
 .myposts-subtab-btn.active {
-  background-color: var(--navy);
-  border-color: var(--navy);
-  color: #ffffff;
+  background-color: var(--blue);
+  border-color: var(--blue);
+  color: #FFFFFF;
 }
-
-

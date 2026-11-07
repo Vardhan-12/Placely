@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams, Link } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 import Spinner from "../components/Spinner";
 import "../styles/experiences.css";
 
@@ -23,6 +24,7 @@ const ExperienceForm = () => {
   const isEditMode = Boolean(id);
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
 
   // Loading & Error states
   const [loading, setLoading] = useState(isEditMode);
@@ -313,13 +315,16 @@ const ExperienceForm = () => {
       if (isEditMode) {
         const res = await api.put(`/experiences/${id}`, payload);
         if (res.data?.success) {
+          toast.success("Experience updated successfully.");
           navigate(`/experiences/${id}`);
         }
       } else {
         const res = await api.post("/experiences", payload);
         if (res.data?.success && res.data?.data?._id) {
+          toast.success("Experience published successfully!");
           navigate(`/experiences/${res.data.data._id}`);
         } else {
+          toast.success("Experience published successfully!");
           navigate("/companies");
         }
       }
@@ -329,6 +334,7 @@ const ExperienceForm = () => {
         err.message ||
         "Failed to save experience. Please check your inputs.";
       setServerError(msg);
+      toast.error(msg);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } finally {
       setSubmitting(false);

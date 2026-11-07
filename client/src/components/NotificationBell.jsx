@@ -110,7 +110,7 @@ const NotificationBell = () => {
           height="22"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#FFFFFF"
+          stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"

@@ -6,7 +6,8 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import api from "../../api/axios";
-import Spinner from "../../components/Spinner";
+import { TableSkeleton } from "../../components/Skeleton";
+import { useToast } from "../../context/ToastContext";
 
 const TABS = ["pending", "approved", "rejected"];
 
@@ -18,7 +19,7 @@ const AdminSeniors = () => {
   const [seniors, setSeniors]   = useState([]);
   const [loading, setLoading]   = useState(true);
   const [actionId, setActionId] = useState(null); // id currently being actioned
-  const [toast, setToast]       = useState(null);  // { type: "success"|"error", msg }
+  const toast                   = useToast();
 
   // Reject modal state
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
@@ -27,23 +28,18 @@ const AdminSeniors = () => {
   const [rejectError, setRejectError]         = useState("");
   const [viewingProofId, setViewingProofId]   = useState(null);
 
-  const showToast = (type, msg) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 4000);
-  };
-
   const fetchSeniors = useCallback(async (status) => {
     setLoading(true);
     try {
       const res = await api.get(`/admin/seniors?status=${status}`);
       setSeniors(res.data?.data || []);
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to load seniors.");
+      toast.error(err.response?.data?.message || "Failed to load seniors.");
       setSeniors([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     fetchSeniors(tab);
@@ -53,10 +49,10 @@ const AdminSeniors = () => {
     setActionId(id);
     try {
       const res = await api.patch(`/admin/seniors/${id}/approve`);
-      showToast("success", res.data?.message || "Senior approved successfully.");
+      toast.success(res.data?.message || "Senior approved successfully.");
       await fetchSeniors(tab);
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to approve senior.");
+      toast.error(err.response?.data?.message || "Failed to approve senior.");
     } finally {
       setActionId(null);
     }
@@ -81,7 +77,7 @@ const AdminSeniors = () => {
       const res = await api.patch(`/admin/seniors/${rejectTarget._id}/reject`, {
         reason: rejectReason.trim(),
       });
-      showToast("success", res.data?.message || "Senior verification rejected.");
+      toast.success(res.data?.message || "Senior verification rejected.");
       setRejectModalOpen(false);
       setRejectTarget(null);
       await fetchSeniors(tab);
@@ -103,7 +99,7 @@ const AdminSeniors = () => {
       const blobUrl = URL.createObjectURL(blob);
       window.open(blobUrl, "_blank", "noopener,noreferrer");
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Could not view proof document.");
+      toast.error(err.response?.data?.message || "Could not view proof document.");
     } finally {
       setViewingProofId(null);
     }
@@ -127,12 +123,8 @@ const AdminSeniors = () => {
         ))}
       </div>
 
-      {toast && (
-        <div className={`admin-toast admin-toast-${toast.type}`}>{toast.msg}</div>
-      )}
-
       {loading ? (
-        <Spinner message="Loading seniors..." />
+        <TableSkeleton rows={5} cols={tab === "rejected" ? 7 : 6} />
       ) : seniors.length === 0 ? (
         <div className="admin-empty">
           No {tab} seniors found.

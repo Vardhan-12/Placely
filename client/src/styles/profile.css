@@ -8,6 +8,7 @@
 
 .profile-card {
   padding: 32px 36px;
+  box-shadow: var(--shadow);
 }
 
 .profile-header {
@@ -22,7 +23,7 @@
 .profile-name {
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin: 0 0 4px;
 }
 
@@ -79,7 +80,7 @@
 .profile-stat-count {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--text);
   margin-bottom: 4px;
 }
 
@@ -88,4 +89,3 @@
   color: var(--muted);
   font-weight: 600;
 }
-

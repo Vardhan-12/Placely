@@ -4,11 +4,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 import Spinner from "./Spinner";
 import "../styles/qa.css";
 
 const QATab = ({ companyId }) => {
   const { user, isAuthenticated } = useAuth();
+  const toast = useToast();
   const currentUserId = user?.id || user?._id;
   const isAdmin = user?.role === "admin";
   const isSenior = user?.role === "senior";
@@ -64,7 +66,7 @@ const QATab = ({ companyId }) => {
       const res = await api.get(`/qa/questions/${qId}`);
       setExpandedDetails((prev) => ({ ...prev, [qId]: res.data?.data }));
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to load answers.");
+      toast.error(err.response?.data?.message || "Failed to load answers.");
     } finally {
       setExpandedLoading((prev) => ({ ...prev, [qId]: false }));
     }
@@ -146,7 +148,7 @@ const QATab = ({ companyId }) => {
   // Toggle answer upvote
   const handleToggleUpvote = async (answerId, qId) => {
     if (!isAuthenticated) {
-      alert("Please log in to upvote answers.");
+      toast.info("Please log in to upvote answers.");
       return;
     }
     if (actionBusy[answerId]) return;
@@ -156,7 +158,7 @@ const QATab = ({ companyId }) => {
       await api.post(`/qa/answers/${answerId}/upvote`);
       await fetchQuestionDetail(qId);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to update upvote.");
+      toast.error(err.response?.data?.message || "Failed to update upvote.");
     } finally {
       setActionBusy((prev) => ({ ...prev, [answerId]: false }));
     }
@@ -168,9 +170,10 @@ const QATab = ({ companyId }) => {
     setActionBusy((prev) => ({ ...prev, [answerId]: true }));
     try {
       await api.patch(`/qa/answers/${answerId}/best`);
+      toast.success("Marked as best answer.");
       await fetchQuestionDetail(qId);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to mark as best answer.");
+      toast.error(err.response?.data?.message || "Failed to mark as best answer.");
     } finally {
       setActionBusy((prev) => ({ ...prev, [answerId]: false }));
     }
@@ -185,6 +188,7 @@ const QATab = ({ companyId }) => {
 
     try {
       await api.delete(`/qa/questions/${qId}`);
+      toast.success("Question deleted.");
       setExpandedDetails((prev) => {
         const copy = { ...prev };
         delete copy[qId];
@@ -192,7 +196,7 @@ const QATab = ({ companyId }) => {
       });
       await fetchQuestions();
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete question.");
+      toast.error(err.response?.data?.message || "Failed to delete question.");
     }
   };
 
@@ -203,11 +207,12 @@ const QATab = ({ companyId }) => {
 
     try {
       await api.delete(`/qa/answers/${ansId}`);
+      toast.success("Answer deleted.");
       await fetchQuestionDetail(qId);
       const res = await api.get(`/qa/questions?company=${companyId}`);
       setQuestions(res.data?.data || []);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to delete answer.");
+      toast.error(err.response?.data?.message || "Failed to delete answer.");
     }
   };
 

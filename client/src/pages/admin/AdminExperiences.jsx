@@ -7,7 +7,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
-import Spinner from "../../components/Spinner";
+import { TableSkeleton } from "../../components/Skeleton";
+import { useToast } from "../../context/ToastContext";
 
 const getResultBadgeClass = (result) => {
   switch (result) {
@@ -21,13 +22,8 @@ const getResultBadgeClass = (result) => {
 const AdminExperiences = () => {
   const [exps, setExps]           = useState([]);
   const [loading, setLoading]     = useState(true);
-  const [toast, setToast]         = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-
-  const showToast = (type, msg) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 4000);
-  };
+  const toast                     = useToast();
 
   const fetchExps = useCallback(async () => {
     setLoading(true);
@@ -35,11 +31,11 @@ const AdminExperiences = () => {
       const res = await api.get("/experiences");
       setExps(res.data?.data || []);
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to load experiences.");
+      toast.error(err.response?.data?.message || "Failed to load experiences.");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [toast]);
 
   useEffect(() => { fetchExps(); }, [fetchExps]);
 
@@ -49,10 +45,10 @@ const AdminExperiences = () => {
     setDeletingId(exp._id);
     try {
       const res = await api.delete(`/experiences/${exp._id}`);
-      showToast("success", res.data?.message || "Experience deleted.");
+      toast.success(res.data?.message || "Experience deleted.");
       await fetchExps();
     } catch (err) {
-      showToast("error", err.response?.data?.message || "Failed to delete.");
+      toast.error(err.response?.data?.message || "Failed to delete.");
     } finally {
       setDeletingId(null);
     }
@@ -65,12 +61,8 @@ const AdminExperiences = () => {
         Moderate all placement experiences. ({exps.length} total)
       </p>
 
-      {toast && (
-        <div className={`admin-toast admin-toast-${toast.type}`}>{toast.msg}</div>
-      )}
-
       {loading ? (
-        <Spinner message="Loading experiences..." />
+        <TableSkeleton rows={5} cols={7} />
       ) : exps.length === 0 ? (
         <div className="admin-empty">No experiences posted yet.</div>
       ) : (

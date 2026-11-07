@@ -83,14 +83,14 @@ const SeniorVerificationCard = ({ onUploaded }) => {
       </div>
 
       {isPending && (
-        <p style={{ margin: "4px 0 0 0", fontSize: "0.875rem", color: "#92400e", lineHeight: 1.5 }}>
+        <p style={{ margin: "4px 0 0 0", fontSize: "0.875rem", color: "var(--alert-warn-text)", lineHeight: 1.5 }}>
           Your senior placement proof is currently under review by college administrators. You will be able to share experiences and answer questions once approved.
         </p>
       )}
 
       {isRejected && (
         <>
-          <p style={{ margin: "4px 0 0 0", fontSize: "0.875rem", color: "#991b1b" }}>
+          <p style={{ margin: "4px 0 0 0", fontSize: "0.875rem", color: "var(--alert-danger-text)" }}>
             Admin feedback:
           </p>
           <div className="proof-reason-box">

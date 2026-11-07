@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
-import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
+import { CompanyCardSkeleton } from "../components/Skeleton";
 import "../styles/companies.css";
 
 // Helper: Format package range nicely
@@ -124,21 +124,28 @@ const Companies = () => {
         </div>
       </div>
 
-      {/* Content Rendering: Loading, Error, Empty, or Cards Grid */}
+      {/* Content Rendering: Skeletons, Error, Empty, or Cards Grid */}
       {loading ? (
-        <Spinner message="Loading companies..." />
-      ) : error ? (
-        <div className="alert-warning" style={{ textAlign: "center", margin: "24px 0" }}>
-          <p>{error}</p>
-          <button
-            type="button"
-            className="btn btn-outline"
-            style={{ marginTop: 12 }}
-            onClick={() => setDebouncedSearch((s) => s + " ")}
-          >
-            Try Again
-          </button>
+        <div className="companies-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CompanyCardSkeleton key={i} />
+          ))}
         </div>
+      ) : error ? (
+        <EmptyState
+          isError={true}
+          title="Failed to load companies"
+          message={error}
+          action={
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => setDebouncedSearch((s) => s + " ")}
+            >
+              Try Again
+            </button>
+          }
+        />
       ) : companies.length === 0 ? (
         <EmptyState
           title="No companies found"

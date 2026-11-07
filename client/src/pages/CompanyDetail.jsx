@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import EmptyState from "../components/EmptyState";
+import { ExperienceCardSkeleton } from "../components/Skeleton";
 import QATab from "../components/QATab";
 import AISummary from "../components/AISummary";
 import "../styles/companies.css";
@@ -347,7 +348,11 @@ const CompanyDetail = () => {
           </div>
 
           {expLoading ? (
-            <Spinner message="Loading interview experiences..." />
+            <div className="experiences-list">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <ExperienceCardSkeleton key={i} />
+              ))}
+            </div>
           ) : experiences.length === 0 ? (
             <EmptyState
               title="No experiences yet"
