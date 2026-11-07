@@ -2,9 +2,7 @@
 
 # Placely
 
-### Learn from seniors who cracked it. Prepare for your campus placements with real, verified experiences.
-
-**Built by [Bala Vardhan Utla](https://github.com/Vardhan-12)** · B.Tech CSE, Lovely Professional University
+**Learn from seniors who cracked it. Prepare for campus placements with real, verified experiences.**
 
 ![React](https://img.shields.io/badge/React-Vite-2563EB?style=flat-square&logo=react&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-102A43?style=flat-square&logo=nodedotjs&logoColor=white)
@@ -12,60 +10,72 @@
 ![JWT](https://img.shields.io/badge/Auth-JWT-2563EB?style=flat-square)
 ![AI](https://img.shields.io/badge/AI-Gemini%20%2B%20Groq-102A43?style=flat-square)
 
-[Live Demo](<your-vercel-link>) · [Report a Bug](<your-repo-link>/issues)
+**Built by [Bala Vardhan Utla](https://github.com/Vardhan-12)** · B.Tech CSE, Lovely Professional University
+
+[Live Demo](#) · [Report a Bug](https://github.com/Vardhan-12/Placely/issues)
 
 </div>
 
 ---
 
+## Table of Contents
+
+[About](#about) · [Screenshots](#screenshots) · [Features](#features) · [Highlights](#highlights) · [Tech Stack](#tech-stack) · [Architecture](#architecture) · [Getting Started](#getting-started) · [Security](#security) · [Future Work](#future-work) · [Developer](#developer)
+
+---
+
 ## About
 
-Campus placements repeat every year: the same companies visit with similar rounds, yet the knowledge lives in scattered WhatsApp groups and disappears when seniors graduate.
+Campus placements repeat every year: the same companies visit with similar rounds, yet the knowledge lives in scattered chat groups and disappears when seniors graduate.
 
-**Placely** is a placement experience portal where **verified seniors** share company-wise interview experiences, and **juniors** read them, ask questions, and prepare with real data. Seniors prove their placement with an offer document, an admin reviews it, and only then can they post. That keeps the content trustworthy.
+**Placely** is a placement experience portal. **Verified seniors** share company-wise interview experiences, and **juniors** read them, ask questions and prepare with real data. Seniors prove their placement with a document, an admin reviews it, and only then can they post, which keeps the content trustworthy.
 
-## Developer
+## Screenshots
 
-**Bala Vardhan Utla**
-B.Tech Computer Science and Engineering, Lovely Professional University
+| Home | Companies |
+|---|---|
+| ![Home](docs/screenshots/home.png) | ![Companies](docs/screenshots/companies.png) |
 
-- GitHub: `<your-github-link>`
-- LinkedIn: `<your-linkedin-link>`
+| Experience | AI Insights |
+|---|---|
+| ![Experience](docs/screenshots/experience.png) | ![AI Insights](docs/screenshots/ai-insights.png) |
 
-Designed, built, tested and deployed end to end as a full-stack MERN project.
+| Admin Dashboard | Light Mode |
+|---|---|
+| ![Admin](docs/screenshots/admin.png) | ![Light Mode](docs/screenshots/light-mode.png) |
 
 ## Features
 
 ### Junior (student)
 - Browse companies with search, filters and sorting
-- Read round-by-round interview experiences with difficulty, topics, tips and mistakes
+- Read round-by-round experiences with difficulty, topics, tips and mistakes
 - Upvote and bookmark experiences
-- Ask company-specific questions, and mark the best answer
+- Ask company-specific questions and mark the best answer
 - Generate an AI summary of a company's experiences
 
 ### Senior (placed student)
 - Sign up with placement proof (PDF, JPG or PNG)
-- Get notified when verified or rejected, and re-upload proof if rejected
+- Get notified on verification, or re-upload proof if rejected
 - Post experiences with dynamic rounds, optionally anonymously
 - Manage posts in **My Posts** (edit, delete)
-- Answer juniors' questions from a **Questions for Me** inbox
+- Answer questions from the **Questions for Me** inbox
 
 ### Admin
-- Review pending seniors, view their proof, approve, or reject with a reason
+- Review pending seniors, view proof, approve, or reject with a reason
 - Add, edit and delete companies and their rounds
-- Moderate experiences and see platform statistics
-- Receive notifications for new verification requests
+- Moderate experiences and view platform statistics
+- Get notified of new verification requests
 
 ## Highlights
 
-| | |
+| Feature | Description |
 |---|---|
-| **Proof-based verification** | Seniors are approved only after an admin reviews their document |
-| **In-app notifications** | Bell with unread count for verification updates and requests |
-| **Anonymous posting** | The author's identity is hidden on the server, not only in the UI |
-| **AI company summary** | Gemini summarizes common rounds, topics, tips and mistakes, with a Groq fallback and database caching |
-| **Dark and light theme** | Saved preference, follows the system default |
-| **Live refresh** | Status and lists refresh on focus and on an interval, so there is no need to log in again |
+| Proof-based verification | Seniors are approved only after an admin reviews their document |
+| In-app notifications | Bell with unread count for verification updates and requests |
+| Anonymous posting | The author is hidden by the API itself, not just the UI |
+| AI company summary | Gemini summarizes rounds, topics, tips and mistakes, with Groq fallback and caching |
+| Dark and light theme | Saved preference, follows the system default |
+| Live refresh | Status and lists refresh on focus and on a timer, with no re-login needed |
 
 ## Tech Stack
 
@@ -73,8 +83,8 @@ Designed, built, tested and deployed end to end as a full-stack MERN project.
 |---|---|
 | Frontend | React (Vite), React Router, Axios, plain CSS with design tokens |
 | Backend | Node.js, Express |
-| Database | MongoDB Atlas with Mongoose |
-| Authentication | JWT, bcrypt, role-based middleware (junior, senior, admin) |
+| Database | MongoDB Atlas, Mongoose |
+| Authentication | JWT, bcrypt, role-based middleware |
 | File uploads | Multer with type and size validation |
 | AI | Google Gemini (primary), Groq (fallback), cached summaries |
 | Security | Helmet, rate limiting, CORS allow-list |
@@ -105,31 +115,26 @@ placely/
 
 ## Getting Started
 
-### Prerequisites
-- Node.js 18 or later
-- A MongoDB Atlas cluster (free tier is enough)
-- Optional: a Gemini API key and a Groq API key for the AI summary
-
-### Run locally
+**Prerequisites:** Node.js 18+, a MongoDB Atlas cluster, and optionally Gemini and Groq API keys.
 
 ```bash
-# 1. Clone
-git clone <your-repo-link>
-cd placely
+# Clone
+git clone https://github.com/Vardhan-12/Placely.git
+cd Placely
 
-# 2. Backend
+# Backend
 cd server
 npm install
-cp .env.example .env      # then fill in your own values
+cp .env.example .env      # fill in your own values
 npm run dev
 
-# 3. Frontend (new terminal)
+# Frontend (new terminal)
 cd client
 npm install
 npm run dev
 ```
 
-The frontend runs on `http://localhost:5173` and proxies `/api` to the backend on port 5000.
+The app runs at `http://localhost:5173` and proxies `/api` to the backend on port 5000.
 
 ### Environment variables
 
@@ -139,13 +144,13 @@ The frontend runs on `http://localhost:5173` and proxies `/api` to the backend o
 |---|---|
 | `PORT` | Server port |
 | `MONGO_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | Secret used to sign tokens |
-| `JWT_EXPIRES_IN` | Token lifetime, for example `7d` |
-| `ADMIN_SIGNUP_CODE` | Invite code required to create an admin account |
+| `JWT_SECRET` | Secret for signing tokens |
+| `JWT_EXPIRES_IN` | Token lifetime, e.g. `7d` |
+| `ADMIN_SIGNUP_CODE` | Invite code to create an admin account |
 | `CLIENT_URL` | Allowed frontend origin(s) for CORS |
 | `GEMINI_API_KEY` | Gemini API key |
-| `GEMINI_MODEL` | Primary Gemini model name |
-| `GEMINI_FALLBACK_MODEL` | Lighter Gemini model used if the primary is busy |
+| `GEMINI_MODEL` | Primary Gemini model |
+| `GEMINI_FALLBACK_MODEL` | Lighter model used if the primary is busy |
 | `GROQ_API_KEY` | Groq API key (second fallback) |
 | `GROQ_MODEL` | Groq model name |
 
@@ -159,38 +164,27 @@ The frontend runs on `http://localhost:5173` and proxies `/api` to the backend o
 
 ## Security
 
-- Passwords are hashed with **bcrypt** before storage and never returned
-- **JWT** authentication; the user is re-loaded from the database on every protected request
+- Passwords hashed with **bcrypt**, never returned by the API
+- **JWT** auth; the user is re-loaded from the database on each protected request
 - **Role middleware** separates junior, senior and admin actions
-- Admin accounts can only be created with a server-side **invite code**
-- Placement proofs are validated for type and size, stored under random names, and viewable only by admins
-- Anonymous authors are hidden by the API itself
-- **Helmet**, request size limits, and **rate limiting** on login and signup
-- Secrets live only in environment variables
-
-## Screenshots
-
-| Home | Companies |
-|---|---|
-| `<add screenshot>` | `<add screenshot>` |
-
-| Experience | AI Insights |
-|---|---|
-| `<add screenshot>` | `<add screenshot>` |
-
-| Admin Dashboard | Dark Mode |
-|---|---|
-| `<add screenshot>` | `<add screenshot>` |
+- Admin accounts require a server-side **invite code**
+- Proofs validated for type and size, stored under random names, viewable only by admins
+- Anonymous authors hidden by the API
+- **Helmet**, request size limits and **rate limiting** on login and signup
+- Secrets only in environment variables
 
 ## Future Work
 
 - Threaded replies in Q&A
-- Analytics charts per company (result split, difficulty, topic frequency)
+- Analytics charts per company
 - Cloud storage for placement proofs
 - Email notifications
-- Sign in with Google restricted to college email domains
+- Google sign-in restricted to college domains
 
-## Credits
+## Developer
 
-Created by **Bala Vardhan Utla** as a full-stack MERN project at Lovely Professional University.
-Demo data in screenshots is sample data and does not represent real students.
+**Bala Vardhan Utla** · B.Tech Computer Science and Engineering, Lovely Professional University
+
+[GitHub](https://github.com/Vardhan-12) · [LinkedIn](https://www.linkedin.com/in/utla-bala-vardhan-0699b3282/)
+
+Designed, built and tested end to end as a full-stack MERN project. Demo data in screenshots is sample data and does not represent real students.
