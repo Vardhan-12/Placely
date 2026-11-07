@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
 import Spinner from "./Spinner";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 import "../styles/qa.css";
 
 const QATab = ({ companyId }) => {
@@ -40,24 +41,39 @@ const QATab = ({ companyId }) => {
   const [actionBusy, setActionBusy] = useState({});
 
   // Fetch questions for this company
-  const fetchQuestions = useCallback(async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const res = await api.get(`/qa/questions?company=${companyId}`);
-      setQuestions(res.data?.data || []);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to load questions.");
-    } finally {
-      setLoading(false);
-    }
-  }, [companyId]);
+  const fetchQuestions = useCallback(
+    async ({ isBackground = false } = {}) => {
+      if (!isBackground) {
+        setLoading(true);
+      }
+      setError("");
+      try {
+        const res = await api.get(`/qa/questions?company=${companyId}`);
+        setQuestions(res.data?.data || []);
+      } catch (err) {
+        if (!isBackground) {
+          setError(err.response?.data?.message || "Failed to load questions.");
+        }
+      } finally {
+        if (!isBackground) {
+          setLoading(false);
+        }
+      }
+    },
+    [companyId]
+  );
 
   useEffect(() => {
     if (companyId) {
-      fetchQuestions();
+      fetchQuestions({ isBackground: false });
     }
   }, [companyId, fetchQuestions]);
+
+  // Auto refresh Q&A tab (focus + 30s)
+  useAutoRefresh(fetchQuestions, {
+    intervalMs: 30000,
+    enabled: Boolean(companyId),
+  });
 
   // Fetch single question with answers when expanding
   const fetchQuestionDetail = async (qId) => {

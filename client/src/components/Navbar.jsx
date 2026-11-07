@@ -1,11 +1,12 @@
 // Navbar.jsx - Top navigation header with role-based links and auth actions
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import NotificationBell from "./NotificationBell";
 import ThemeToggle from "./ThemeToggle";
 import api from "../api/axios";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -13,24 +14,28 @@ const Navbar = () => {
   const [adminPendingCount, setAdminPendingCount] = useState(0);
 
   // For admins, poll pending senior requests count
-  useEffect(() => {
-    if (isAuthenticated && user?.role === "admin") {
-      const fetchAdminStats = async () => {
-        try {
-          const res = await api.get("/admin/stats");
-          if (res.data?.success && res.data?.data) {
-            setAdminPendingCount(res.data.data.pendingSeniors || 0);
-          }
-        } catch (err) {
-          // ignore background stat error
-        }
-      };
-
-      fetchAdminStats();
-      const interval = setInterval(fetchAdminStats, 30000);
-      return () => clearInterval(interval);
+  const fetchAdminStats = useCallback(async () => {
+    if (!isAuthenticated || user?.role !== "admin") return;
+    try {
+      const res = await api.get("/admin/stats");
+      if (res.data?.success && res.data?.data) {
+        setAdminPendingCount(res.data.data.pendingSeniors || 0);
+      }
+    } catch (err) {
+      // ignore background stat error
     }
   }, [isAuthenticated, user?.role]);
+
+  useEffect(() => {
+    if (isAuthenticated && user?.role === "admin") {
+      fetchAdminStats();
+    }
+  }, [isAuthenticated, user?.role, fetchAdminStats]);
+
+  useAutoRefresh(fetchAdminStats, {
+    intervalMs: 30000,
+    enabled: isAuthenticated && user?.role === "admin",
+  });
 
   const handleLogout = () => {
     logout();

@@ -529,3 +529,157 @@ select {
   font-size: 0.85rem;
   color: var(--muted);
 }
+
+/* Form Field Hints */
+.form-field-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ── Signup Polish: Password rules & Upload box ── */
+.password-field-container {
+  position: relative;
+}
+
+.password-rules-popover {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-left: var(--space-3);
+  width: 240px;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  box-shadow: var(--shadow);
+  z-index: 20;
+}
+
+@media (max-width: 900px) {
+  .password-rules-popover {
+    position: static;
+    margin-left: 0;
+    margin-top: var(--space-2);
+    width: 100%;
+  }
+}
+
+.password-rules-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.password-rule-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.82rem;
+  margin-bottom: var(--space-1);
+  color: var(--muted);
+  transition: color 150ms ease;
+}
+
+.password-rule-item.valid {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.password-rule-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 0.75rem;
+}
+
+/* Proof file dashed upload box */
+.proof-upload-box {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  background-color: var(--surface);
+  transition: border-color 150ms ease, background-color 150ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.proof-upload-box:hover,
+.proof-upload-box:focus-visible {
+  border-color: var(--blue);
+  background-color: var(--card-bg-subtle, var(--surface));
+  outline: none;
+}
+
+.proof-upload-icon {
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.proof-upload-prompt {
+  font-size: 0.88rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.proof-selected-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.proof-selected-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.proof-selected-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.proof-selected-size {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.proof-remove-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--danger);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-weight: 500;
+}
+
+.proof-remove-btn:hover {
+  background-color: var(--danger-bg);
+  border-color: var(--danger);
+}
+

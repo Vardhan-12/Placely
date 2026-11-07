@@ -1,6 +1,6 @@
-// AuthContext.jsx - Authentication state, login, signup, and token persistence
+// AuthContext.jsx - Authentication state, login, signup, token persistence, and live user refresh
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import api from "../api/axios";
 
 const AuthContext = createContext(null);
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Save or remove session from state & localStorage
-  const saveSession = (authToken, authUser) => {
+  const saveSession = useCallback((authToken, authUser) => {
     setToken(authToken);
     setUser(authUser);
     try {
@@ -41,7 +41,80 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error("Failed to update localStorage", err);
     }
-  };
+  }, []);
+
+  const logout = useCallback(() => {
+    saveSession(null, null);
+  }, [saveSession]);
+
+  // refreshUser: calls /auth/me, updates state & localStorage (try/catch), logs out ONLY on 401
+  const refreshUser = useCallback(async () => {
+    const currentToken = localStorage.getItem("placely_token");
+    if (!currentToken) return null;
+
+    try {
+      const res = await api.get("/auth/me");
+      if (res.data?.success && res.data?.user) {
+        const updatedUser = res.data.user;
+        setUser(updatedUser);
+        try {
+          localStorage.setItem("placely_user", JSON.stringify(updatedUser));
+        } catch (e) {
+          console.error("Failed to update user in localStorage", e);
+        }
+        return updatedUser;
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        logout();
+      } else {
+        console.warn("Could not refresh user status:", err.message);
+      }
+    }
+    return null;
+  }, [logout]);
+
+  // Initial load check if token exists
+  useEffect(() => {
+    const storedToken = localStorage.getItem("placely_token");
+    if (storedToken) {
+      refreshUser();
+    }
+  }, [refreshUser]);
+
+  // Window focus & visibility listener
+  useEffect(() => {
+    const handleFocusOrVisible = () => {
+      if (document.hidden) return;
+      const storedToken = localStorage.getItem("placely_token");
+      if (storedToken) {
+        refreshUser();
+      }
+    };
+
+    window.addEventListener("focus", handleFocusOrVisible);
+    document.addEventListener("visibilitychange", handleFocusOrVisible);
+
+    return () => {
+      window.removeEventListener("focus", handleFocusOrVisible);
+      document.removeEventListener("visibilitychange", handleFocusOrVisible);
+    };
+  }, [refreshUser]);
+
+  // Poll every 30 seconds while user is a senior whose status is not approved
+  useEffect(() => {
+    if (!user || user.role !== "senior") return;
+    const isApproved = user.isVerified || user.verificationStatus === "approved";
+    if (isApproved) return;
+
+    const interval = setInterval(() => {
+      if (!document.hidden) {
+        refreshUser();
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [user?.role, user?.isVerified, user?.verificationStatus, refreshUser]);
 
   const login = async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
@@ -61,10 +134,6 @@ export const AuthProvider = ({ children }) => {
     throw new Error(res.data?.message || "Signup failed");
   };
 
-  const logout = () => {
-    saveSession(null, null);
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -74,6 +143,7 @@ export const AuthProvider = ({ children }) => {
         login,
         signup,
         logout,
+        refreshUser,
         isAuthenticated: Boolean(token && user),
       }}
     >
@@ -89,4 +159,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
 

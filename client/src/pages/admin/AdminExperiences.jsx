@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import { TableSkeleton } from "../../components/Skeleton";
 import { useToast } from "../../context/ToastContext";
+import useAutoRefresh from "../../hooks/useAutoRefresh";
 
 const getResultBadgeClass = (result) => {
   switch (result) {
@@ -25,19 +26,35 @@ const AdminExperiences = () => {
   const [deletingId, setDeletingId] = useState(null);
   const toast                     = useToast();
 
-  const fetchExps = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/experiences");
-      setExps(res.data?.data || []);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to load experiences.");
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+  const fetchExps = useCallback(
+    async ({ isBackground = false } = {}) => {
+      if (!isBackground) {
+        setLoading(true);
+      }
+      try {
+        const res = await api.get("/experiences");
+        setExps(res.data?.data || []);
+      } catch (err) {
+        if (!isBackground) {
+          toast.error(err.response?.data?.message || "Failed to load experiences.");
+        }
+      } finally {
+        if (!isBackground) {
+          setLoading(false);
+        }
+      }
+    },
+    [toast]
+  );
 
-  useEffect(() => { fetchExps(); }, [fetchExps]);
+  useEffect(() => {
+    fetchExps({ isBackground: false });
+  }, [fetchExps]);
+
+  // Focus + 30s auto refresh for admin experiences table
+  useAutoRefresh(fetchExps, {
+    intervalMs: 30000,
+  });
 
   const handleDelete = async (exp) => {
     const label = `${exp.role} @ ${exp.company?.name || "?"}`;

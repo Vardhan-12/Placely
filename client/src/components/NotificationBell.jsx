@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 import "../styles/notifications.css";
 
 // Helper: Format relative time
@@ -22,6 +23,7 @@ const timeAgo = (dateStr) => {
 };
 
 const NotificationBell = () => {
+  const { refreshUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -34,8 +36,20 @@ const NotificationBell = () => {
     try {
       const res = await api.get("/notifications");
       if (res.data?.success) {
-        setNotifications(res.data.data || []);
+        const list = res.data.data || [];
+        setNotifications(list);
         setUnreadCount(res.data.unreadCount || 0);
+
+        // Check if any notification is related to verification
+        const hasVerificationNotif = list.some(
+          (n) =>
+            n.type?.includes("verification") ||
+            n.type?.includes("senior") ||
+            /verification|approved|rejected/i.test(n.message || "")
+        );
+        if (hasVerificationNotif && refreshUser) {
+          refreshUser();
+        }
       }
     } catch (err) {
       // Silently fail on polling errors to avoid disrupting UI

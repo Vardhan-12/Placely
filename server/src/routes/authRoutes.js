@@ -3,11 +3,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { signup, login, resubmitProof } = require("../controllers/authController");
+const { signup, login, resubmitProof, getMe } = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 const { uploadProofSingle } = require("../middleware/uploadProof");
 const { authLimiter } = require("../middleware/rateLimiter");
+
+// GET /api/auth/me       → get current logged-in user details
+router.get("/me", protect, getMe);
 
 // POST /api/auth/signup  → register a new user (supports JSON or multipart for seniors with proof)
 router.post("/signup", authLimiter, uploadProofSingle, signup);

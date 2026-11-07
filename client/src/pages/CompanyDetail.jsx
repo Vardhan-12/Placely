@@ -1,6 +1,6 @@
 // CompanyDetail.jsx - Detailed company profile with Overview, Experiences, and Q&A tabs
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
@@ -9,6 +9,7 @@ import EmptyState from "../components/EmptyState";
 import { ExperienceCardSkeleton } from "../components/Skeleton";
 import QATab from "../components/QATab";
 import AISummary from "../components/AISummary";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 import "../styles/companies.css";
 
 // Helper: Format package range
@@ -111,12 +112,12 @@ const CompanyDetail = () => {
   }, [id]);
 
   // Fetch experiences when Experiences tab is active or sort changes
-  useEffect(() => {
-    if (activeTab !== "experiences" || !company) return;
-
-    let isMounted = true;
-    const fetchExperiences = async () => {
-      setExpLoading(true);
+  const fetchExperiences = useCallback(
+    async ({ isBackground = false } = {}) => {
+      if (activeTab !== "experiences" || !company) return;
+      if (!isBackground) {
+        setExpLoading(true);
+      }
       try {
         const res = await api.get("/experiences", {
           params: {
@@ -124,23 +125,29 @@ const CompanyDetail = () => {
             sort: expSort,
           },
         });
-        if (isMounted) {
-          setExperiences(res.data?.data || []);
-        }
+        setExperiences(res.data?.data || []);
       } catch (err) {
         console.error("Failed to fetch experiences", err);
       } finally {
-        if (isMounted) {
+        if (!isBackground) {
           setExpLoading(false);
         }
       }
-    };
+    },
+    [id, activeTab, expSort, company]
+  );
 
-    fetchExperiences();
-    return () => {
-      isMounted = false;
-    };
-  }, [id, activeTab, expSort, company]);
+  useEffect(() => {
+    if (activeTab === "experiences" && company) {
+      fetchExperiences({ isBackground: false });
+    }
+  }, [fetchExperiences, activeTab, company]);
+
+  // Auto refresh experiences tab (focus + 30s)
+  useAutoRefresh(fetchExperiences, {
+    intervalMs: 30000,
+    enabled: activeTab === "experiences" && Boolean(company),
+  });
 
   if (loading) {
     return <Spinner message="Loading company details..." />;

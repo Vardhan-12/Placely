@@ -8,6 +8,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import api from "../../api/axios";
 import { TableSkeleton } from "../../components/Skeleton";
 import { useToast } from "../../context/ToastContext";
+import useAutoRefresh from "../../hooks/useAutoRefresh";
 
 const TABS = ["pending", "approved", "rejected"];
 
@@ -28,22 +29,36 @@ const AdminSeniors = () => {
   const [rejectError, setRejectError]         = useState("");
   const [viewingProofId, setViewingProofId]   = useState(null);
 
-  const fetchSeniors = useCallback(async (status) => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/admin/seniors?status=${status}`);
-      setSeniors(res.data?.data || []);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to load seniors.");
-      setSeniors([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+  const fetchSeniors = useCallback(
+    async (status, { isBackground = false } = {}) => {
+      if (!isBackground) {
+        setLoading(true);
+      }
+      try {
+        const res = await api.get(`/admin/seniors?status=${status}`);
+        setSeniors(res.data?.data || []);
+      } catch (err) {
+        if (!isBackground) {
+          toast.error(err.response?.data?.message || "Failed to load seniors.");
+        }
+        setSeniors([]);
+      } finally {
+        if (!isBackground) {
+          setLoading(false);
+        }
+      }
+    },
+    [toast]
+  );
 
   useEffect(() => {
-    fetchSeniors(tab);
+    fetchSeniors(tab, { isBackground: false });
   }, [tab, fetchSeniors]);
+
+  // Focus + 30s auto refresh for admin seniors table
+  useAutoRefresh(useCallback(({ isBackground = true } = {}) => fetchSeniors(tab, { isBackground }), [fetchSeniors, tab]), {
+    intervalMs: 30000,
+  });
 
   const handleApprove = async (id) => {
     setActionId(id);

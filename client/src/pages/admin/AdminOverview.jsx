@@ -1,8 +1,9 @@
 // AdminOverview.jsx — Stat cards from GET /api/admin/stats
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import api from "../../api/axios";
 import Spinner from "../../components/Spinner";
+import useAutoRefresh from "../../hooks/useAutoRefresh";
 
 const STATS = [
   { key: "users",          label: "Total Users",       alert: false },
@@ -17,20 +18,32 @@ const AdminOverview = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError]   = useState("");
 
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const res = await api.get("/admin/stats");
-        if (alive) setStats(res.data?.data);
-      } catch (err) {
-        if (alive) setError(err.response?.data?.message || "Failed to load stats.");
-      } finally {
-        if (alive) setLoading(false);
+  const fetchStats = useCallback(async ({ isBackground = false } = {}) => {
+    if (!isBackground) {
+      setLoading(true);
+    }
+    try {
+      const res = await api.get("/admin/stats");
+      setStats(res.data?.data);
+    } catch (err) {
+      if (!isBackground) {
+        setError(err.response?.data?.message || "Failed to load stats.");
       }
-    })();
-    return () => { alive = false; };
+    } finally {
+      if (!isBackground) {
+        setLoading(false);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    fetchStats({ isBackground: false });
+  }, [fetchStats]);
+
+  // Focus + 30s auto refresh for admin overview stats
+  useAutoRefresh(fetchStats, {
+    intervalMs: 30000,
+  });
 
   if (loading) return <Spinner message="Loading stats..." />;
 

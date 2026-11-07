@@ -12,6 +12,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import api from "../../api/axios";
 import { TableSkeleton } from "../../components/Skeleton";
 import { useToast } from "../../context/ToastContext";
+import useAutoRefresh from "../../hooks/useAutoRefresh";
 
 const ROUND_TYPES = ["aptitude", "coding", "technical", "hr", "other"];
 
@@ -60,19 +61,35 @@ const AdminCompanies = () => {
   // Deletion
   const [deletingId, setDeletingId] = useState(null);
 
-  const fetchCompanies = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await api.get("/companies?sort=name");
-      setCompanies(res.data?.data || []);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to load companies.");
-    } finally {
-      setLoading(false);
-    }
-  }, [toast]);
+  const fetchCompanies = useCallback(
+    async ({ isBackground = false } = {}) => {
+      if (!isBackground) {
+        setLoading(true);
+      }
+      try {
+        const res = await api.get("/companies?sort=name");
+        setCompanies(res.data?.data || []);
+      } catch (err) {
+        if (!isBackground) {
+          toast.error(err.response?.data?.message || "Failed to load companies.");
+        }
+      } finally {
+        if (!isBackground) {
+          setLoading(false);
+        }
+      }
+    },
+    [toast]
+  );
 
-  useEffect(() => { fetchCompanies(); }, [fetchCompanies]);
+  useEffect(() => {
+    fetchCompanies({ isBackground: false });
+  }, [fetchCompanies]);
+
+  // Focus + 30s auto refresh for admin companies table
+  useAutoRefresh(fetchCompanies, {
+    intervalMs: 30000,
+  });
 
   // ── Open modal ──────────────────────────────────
   const openCreate = () => {

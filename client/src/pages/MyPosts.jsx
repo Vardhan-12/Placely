@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import SeniorVerificationCard from "../components/SeniorVerificationCard";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 import "../styles/experiences.css";
 import "../styles/qa.css";
 
@@ -72,34 +73,42 @@ const MyPosts = () => {
   }, [isAuthenticated, user, navigate]);
 
   // Fetch experiences
-  const fetchMyPosts = useCallback(async () => {
-    setLoadingPosts(true);
+  const fetchMyPosts = useCallback(async ({ isBackground = false } = {}) => {
+    if (!isBackground) {
+      setLoadingPosts(true);
+    }
     setPostError("");
     try {
       const res = await api.get("/experiences/mine");
       setPosts(res.data?.data || []);
     } catch (err) {
-      setPostError(err.response?.data?.message || "Failed to load your posts.");
+      if (!isBackground) {
+        setPostError(err.response?.data?.message || "Failed to load your posts.");
+      }
     } finally {
-      setLoadingPosts(false);
+      if (!isBackground) {
+        setLoadingPosts(false);
+      }
     }
   }, []);
 
   useEffect(() => {
     if (isAuthenticated && user?.role === "senior") {
-      fetchMyPosts();
+      fetchMyPosts({ isBackground: false });
     }
   }, [isAuthenticated, user, fetchMyPosts]);
 
   // Fetch company & questions for "Questions for Me"
-  const fetchQuestionsForMe = useCallback(async () => {
+  const fetchQuestionsForMe = useCallback(async ({ isBackground = false } = {}) => {
     if (!user?.placedCompany) {
       setMatchedCompany(null);
       setQuestions([]);
       return;
     }
 
-    setLoadingQuestions(true);
+    if (!isBackground) {
+      setLoadingQuestions(true);
+    }
     setQuestionError("");
     try {
       const compRes = await api.get("/companies");
@@ -112,7 +121,7 @@ const MyPosts = () => {
       if (!targetCompany) {
         setMatchedCompany(null);
         setQuestions([]);
-        setLoadingQuestions(false);
+        if (!isBackground) setLoadingQuestions(false);
         return;
       }
 
@@ -120,17 +129,33 @@ const MyPosts = () => {
       const qRes = await api.get(`/qa/questions?company=${targetCompany._id}`);
       setQuestions(qRes.data?.data || []);
     } catch (err) {
-      setQuestionError(err.response?.data?.message || "Failed to load questions.");
+      if (!isBackground) {
+        setQuestionError(err.response?.data?.message || "Failed to load questions.");
+      }
     } finally {
-      setLoadingQuestions(false);
+      if (!isBackground) {
+        setLoadingQuestions(false);
+      }
     }
   }, [user?.placedCompany]);
 
   useEffect(() => {
     if (isAuthenticated && user?.role === "senior" && activeTab === "questions") {
-      fetchQuestionsForMe();
+      fetchQuestionsForMe({ isBackground: false });
     }
   }, [isAuthenticated, user, activeTab, fetchQuestionsForMe]);
+
+  // Auto refresh experiences tab (focus + 30s)
+  useAutoRefresh(fetchMyPosts, {
+    intervalMs: 30000,
+    enabled: isAuthenticated && user?.role === "senior" && activeTab === "experiences",
+  });
+
+  // Auto refresh questions tab (focus + 30s)
+  useAutoRefresh(fetchQuestionsForMe, {
+    intervalMs: 30000,
+    enabled: isAuthenticated && user?.role === "senior" && activeTab === "questions",
+  });
 
   // Delete experience
   const handleDeleteExperience = async (postId, companyName) => {

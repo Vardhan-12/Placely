@@ -1,10 +1,11 @@
 // Companies.jsx - Public companies directory with search, filter, and sorting
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
 import EmptyState from "../components/EmptyState";
 import { CompanyCardSkeleton } from "../components/Skeleton";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 import "../styles/companies.css";
 
 // Helper: Format package range nicely
@@ -41,10 +42,11 @@ const Companies = () => {
   }, [search]);
 
   // Fetch companies whenever filters or search query change
-  useEffect(() => {
-    let isMounted = true;
-    const fetchCompanies = async () => {
-      setLoading(true);
+  const fetchCompanies = useCallback(
+    async ({ isBackground = false } = {}) => {
+      if (!isBackground) {
+        setLoading(true);
+      }
       setError("");
       try {
         const params = {};
@@ -59,25 +61,26 @@ const Companies = () => {
         }
 
         const res = await api.get("/companies", { params });
-        if (isMounted) {
-          setCompanies(res.data?.data || []);
-        }
+        setCompanies(res.data?.data || []);
       } catch (err) {
-        if (isMounted) {
+        if (!isBackground) {
           setError(err.response?.data?.message || "Failed to load companies");
         }
       } finally {
-        if (isMounted) {
+        if (!isBackground) {
           setLoading(false);
         }
       }
-    };
+    },
+    [debouncedSearch, isUpcomingOnly, sortBy]
+  );
 
-    fetchCompanies();
-    return () => {
-      isMounted = false;
-    };
-  }, [debouncedSearch, isUpcomingOnly, sortBy]);
+  useEffect(() => {
+    fetchCompanies({ isBackground: false });
+  }, [fetchCompanies]);
+
+  // Focus-only auto refresh (throttled to 15s)
+  useAutoRefresh(fetchCompanies, { intervalMs: null });
 
   return (
     <div className="container" style={{ padding: "36px 16px" }}>

@@ -284,4 +284,32 @@ const resubmitProof = async (req, res, next) => {
   }
 };
 
-module.exports = { signup, login, resubmitProof };
+// ─────────────────────────────────────────────
+// @route   GET /api/auth/me
+// @desc    Get current user profile (clean, no password, no file path)
+// @access  Private
+// ─────────────────────────────────────────────
+const getMe = async (req, res, next) => {
+  try {
+    const user = req.user;
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        branch: user.branch,
+        placedCompany: user.placedCompany,
+        placedYear: user.placedYear,
+        isVerified: user.isVerified,
+        verificationStatus: user.verificationStatus,
+        rejectionReason: user.rejectionReason,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { signup, login, resubmitProof, getMe };

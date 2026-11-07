@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/notifications.css";
 
 const SeniorVerificationCard = ({ onUploaded }) => {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -49,6 +49,9 @@ const SeniorVerificationCard = ({ onUploaded }) => {
       const res = await api.post("/auth/resubmit-proof", formData);
       setSuccess(res.data?.message || "Proof resubmitted! Under review by admins.");
       setFile(null);
+      if (refreshUser) {
+        await refreshUser();
+      }
 
       // Update session user in localStorage
       if (res.data?.user) {

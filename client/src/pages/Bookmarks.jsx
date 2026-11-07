@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
+import useAutoRefresh from "../hooks/useAutoRefresh";
 import "../styles/qa.css";
 
 const getResultBadgeClass = (result) => {
@@ -35,24 +36,36 @@ const Bookmarks = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const fetchBookmarks = useCallback(async () => {
-    setLoading(true);
+  const fetchBookmarks = useCallback(async ({ isBackground = false } = {}) => {
+    if (!isBackground) {
+      setLoading(true);
+    }
     setError("");
     try {
       const res = await api.get("/bookmarks");
       setBookmarks(res.data?.data || []);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to load bookmarks.");
+      if (!isBackground) {
+        setError(err.response?.data?.message || "Failed to load bookmarks.");
+      }
     } finally {
-      setLoading(false);
+      if (!isBackground) {
+        setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchBookmarks();
+      fetchBookmarks({ isBackground: false });
     }
   }, [isAuthenticated, fetchBookmarks]);
+
+  // Focus-only auto refresh (throttled to 15s)
+  useAutoRefresh(fetchBookmarks, {
+    intervalMs: null,
+    enabled: isAuthenticated,
+  });
 
   const handleRemove = async (expId) => {
     setRemovingId(expId);
