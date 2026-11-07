@@ -32,17 +32,23 @@ Campus placements repeat every year: the same companies visit with similar round
 
 ## Screenshots
 
-| Home | Companies |
-|---|---|
-| ![Home](docs/screenshots/home.png) | ![Companies](docs/screenshots/companies.png) |
+### Home
+<img src="docs/screenshots/home.png" width="800" alt="Home">
 
-| Experience | AI Insights |
-|---|---|
-| ![Experience](docs/screenshots/experience.png) | ![AI Insights](docs/screenshots/ai-insights.png) |
+### Companies
+<img src="docs/screenshots/companies.png" width="800" alt="Companies">
 
-| Admin Dashboard | Light Mode |
-|---|---|
-| ![Admin](docs/screenshots/admin.png) | ![Light Mode](docs/screenshots/light-mode.png) |
+### Experience
+<img src="docs/screenshots/experience.png" width="800" alt="Experience">
+
+### AI Insights
+<img src="docs/screenshots/ai-insights.png" width="800" alt="AI Insights">
+
+### Admin Dashboard
+<img src="docs/screenshots/admin.png" width="800" alt="Admin Dashboard">
+
+### Light Mode
+<img src="docs/screenshots/light-mode.png" width="800" alt="Light Mode">
 
 ## Features
 
