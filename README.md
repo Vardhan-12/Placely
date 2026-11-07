@@ -12,7 +12,7 @@
 
 **Built by [Bala Vardhan Utla](https://github.com/Vardhan-12)** · B.Tech CSE, Lovely Professional University
 
-[Live Demo](#) · [Report a Bug](https://github.com/Vardhan-12/Placely/issues)
+[Live Demo](https://placely-xi-three.vercel.app) · [Report a Bug](https://github.com/Vardhan-12/Placely/issues)
 
 </div>
 
