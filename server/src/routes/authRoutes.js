@@ -7,12 +7,13 @@ const { signup, login, resubmitProof } = require("../controllers/authController"
 const { protect } = require("../middleware/authMiddleware");
 const { authorizeRoles } = require("../middleware/roleMiddleware");
 const { uploadProofSingle } = require("../middleware/uploadProof");
+const { authLimiter } = require("../middleware/rateLimiter");
 
 // POST /api/auth/signup  → register a new user (supports JSON or multipart for seniors with proof)
-router.post("/signup", uploadProofSingle, signup);
+router.post("/signup", authLimiter, uploadProofSingle, signup);
 
 // POST /api/auth/login   → login and receive a JWT
-router.post("/login", login);
+router.post("/login", authLimiter, login);
 
 // POST /api/auth/resubmit-proof → senior re-uploads proof
 router.post(

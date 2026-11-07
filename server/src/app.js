@@ -2,6 +2,7 @@
 
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 const morgan = require("morgan");
 
 const errorHandler = require("./middleware/errorHandler");
@@ -17,10 +18,34 @@ const notificationRoutes = require("./routes/notificationRoutes"); // Task 19: N
 
 const app = express();
 
-// --- Global Middleware ---
-app.use(cors());               // Allow cross-origin requests (needed when React frontend calls this API)
-app.use(express.json());       // Parse incoming JSON request bodies
-app.use(morgan("dev"));        // Log every HTTP request to the console in a readable format
+// --- Security & Global Middleware ---
+app.use(helmet());
+
+// Allowed CORS origins: CLIENT_URL (comma-separated) + http://localhost:5173
+const allowedOrigins = [
+  "http://localhost:5173",
+  ...(process.env.CLIENT_URL
+    ? process.env.CLIENT_URL.split(",").map((o) => o.trim()).filter(Boolean)
+    : []),
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, server-to-server)
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: false,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  })
+);
+
+app.use(express.json({ limit: "100kb" })); // Parse incoming JSON request bodies up to 100kb
+app.use(morgan("dev"));                    // Log every HTTP request to the console in a readable format
 
 // --- Routes ---
 

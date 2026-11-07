@@ -22,8 +22,8 @@ const { requireVerified } = require("../middleware/verifiedMiddleware");
 router.get("/questions", getQuestions);
 router.get("/questions/:id", getQuestionById);
 
-// Question routes (Juniors and Seniors can ask)
-router.post("/questions", protect, authorizeRoles("junior", "senior"), createQuestion);
+// Question routes (Only Juniors can ask)
+router.post("/questions", protect, authorizeRoles("junior"), createQuestion);
 router.delete("/questions/:id", protect, deleteQuestion);
 
 // Answer routes (Verified Seniors can answer)

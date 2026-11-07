@@ -15,7 +15,7 @@ const QATab = ({ companyId }) => {
   const isAdmin = user?.role === "admin";
   const isSenior = user?.role === "senior";
   const isVerifiedSenior = isSenior && Boolean(user?.isVerified);
-  const canAsk = isAuthenticated && (user?.role === "junior" || user?.role === "senior");
+  const canAsk = isAuthenticated && user?.role === "junior";
 
   // Questions list state
   const [questions, setQuestions] = useState([]);
@@ -257,7 +257,7 @@ const QATab = ({ companyId }) => {
           </form>
         ) : isAuthenticated ? (
           <p style={{ color: "var(--muted)", margin: 0, fontSize: "0.95rem" }}>
-            Administrators cannot post questions.
+            Only juniors can ask questions.
           </p>
         ) : (
           <div className="qa-login-hint">
