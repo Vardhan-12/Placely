@@ -4,7 +4,7 @@
 
 ### Learn from seniors who cracked it. Prepare for your campus placements with real, verified experiences.
 
-**Built by [Bala Vardhan Utla](<your-github-link>)** · B.Tech CSE, Lovely Professional University
+**Built by [Bala Vardhan Utla](https://github.com/Vardhan-12)** · B.Tech CSE, Lovely Professional University
 
 ![React](https://img.shields.io/badge/React-Vite-2563EB?style=flat-square&logo=react&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-Express-102A43?style=flat-square&logo=nodedotjs&logoColor=white)
