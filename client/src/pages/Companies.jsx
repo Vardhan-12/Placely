@@ -20,28 +20,59 @@ const formatPackageRange = (min, max) => {
 };
 
 const Companies = () => {
-  const [searchParams] = useSearchParams();
-  const initialSearch = searchParams.get("search") || "";
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Filter & Search states
-  const [search, setSearch] = useState(initialSearch);
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  // Filter & Search states — initialise BOTH from the URL immediately so the
+  // first fetch already carries the correct search term (no flash of all results).
+  const urlSearch = searchParams.get("search") || "";
+  const [search, setSearch] = useState(urlSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(urlSearch);
   const [isUpcomingOnly, setIsUpcomingOnly] = useState(false);
   const [sortBy, setSortBy] = useState("latest");
 
-  // Debounce search input by 350ms
+  // Keep search box and debouncedSearch in sync when the URL ?search= changes
+  // from outside (e.g. the user searches from Home or Navbar while on this page).
+  useEffect(() => {
+    const nextSearch = searchParams.get("search") || "";
+    setSearch(nextSearch);
+    setDebouncedSearch(nextSearch);
+  }, [searchParams]);
+
+  // When the user types in the box: debounce the API call AND update the URL
+  // with replace so the back button is not polluted with every keystroke.
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearch(val);
+    // URL update is deferred to the debounce effect below.
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
+      // Mirror the current search value into the URL (?search=...).
+      setSearchParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          if (search.trim()) {
+            next.set("search", search.trim());
+          } else {
+            next.delete("search");
+          }
+          return next;
+        },
+        { replace: true }
+      );
     }, 350);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, setSearchParams]);
 
-  // Fetch companies whenever filters or search query change
+  // Fetch companies whenever filters or search query change.
+  // Uses the ref-based pattern to always read the latest values during
+  // background (window-focus) refreshes — no stale closures.
   const fetchCompanies = useCallback(
     async ({ isBackground = false } = {}) => {
       if (!isBackground) {
@@ -79,7 +110,9 @@ const Companies = () => {
     fetchCompanies({ isBackground: false });
   }, [fetchCompanies]);
 
-  // Focus-only auto refresh (throttled to 15s)
+  // Focus-only auto refresh (throttled to 15s).
+  // fetchCompanies is wrapped in useCallback with the current filter values, so
+  // the auto-refresh always uses up-to-date search/filter/sort — no stale reads.
   useAutoRefresh(fetchCompanies, { intervalMs: null });
 
   return (
@@ -100,7 +133,7 @@ const Companies = () => {
             className="input"
             placeholder="Search companies by name..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
 
@@ -165,6 +198,7 @@ const Companies = () => {
                 onClick={() => {
                   setSearch("");
                   setIsUpcomingOnly(false);
+                  setSearchParams({}, { replace: true });
                 }}
               >
                 Clear Filters

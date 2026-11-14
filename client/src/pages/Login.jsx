@@ -5,6 +5,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import AuthBrandPanel from "../components/AuthBrandPanel";
 import "../styles/auth.css";
 
 const Login = () => {
@@ -18,6 +19,7 @@ const Login = () => {
   const [companyCount, setCompanyCount] = useState(0);
   const [experienceCount, setExperienceCount] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
+  const [experiences, setExperiences] = useState([]);
 
   const { login } = useAuth();
   const toast = useToast();
@@ -37,7 +39,9 @@ const Login = () => {
         ]);
         if (isMounted) {
           setCompanyCount(compRes.data?.count ?? (compRes.data?.data?.length || 0));
-          setExperienceCount(expRes.data?.count ?? (expRes.data?.data?.length || 0));
+          const expList = expRes.data?.data || [];
+          setExperienceCount(expRes.data?.count ?? expList.length);
+          setExperiences(expList);
           setQuestionCount(qRes.data?.count ?? (qRes.data?.data?.length || 0));
         }
       } catch (e) {
@@ -73,77 +77,19 @@ const Login = () => {
 
   return (
     <div className="auth-page-wrapper">
-      {/* ── Left 50% Brand Panel ── */}
-      <div className="auth-brand-side">
-        {/* Live CSS-only animated background */}
-        <div className="auth-flowchart-bg" aria-hidden="true">
-          <div className="auth-bg-grid" />
-          <div className="auth-bg-nodes">
-            <div className="flow-node f-node-1" />
-            <div className="flow-node f-node-2" />
-            <div className="flow-node f-node-3" />
-            <div className="flow-node f-node-4" />
-            <div className="flow-node f-node-5" />
-            <div className="flow-node f-node-6" />
-          </div>
-        </div>
+      <AuthBrandPanel
+        companyCount={companyCount}
+        experienceCount={experienceCount}
+        questionCount={questionCount}
+        experiences={experiences}
+      />
 
-        <div className="auth-brand-content">
-          <div className="auth-badge">PLACEMENT PORTAL</div>
-          <h1 className="auth-hero-title">
-            Placely<span className="auth-dot">.</span>
-          </h1>
-          <p className="auth-tagline">
-            Verified interview rounds, question archives, and campus recruitment records documented by senior students.
-          </p>
-
-          <div className="auth-facts-stack">
-            <div className="auth-fact-item">
-              <span className="auth-fact-metric">{companyCount || "15"}</span>
-              <span className="auth-fact-desc">
-                <strong>Hiring companies</strong> with eligibility criteria, compensation packages, and test dates.
-              </span>
-            </div>
-            <div className="auth-fact-item">
-              <span className="auth-fact-metric">{experienceCount || "49"}</span>
-              <span className="auth-fact-desc">
-                <strong>Interview logs</strong> breaking down OA test cases, technical interviews, and HR questions.
-              </span>
-            </div>
-            <div className="auth-fact-item">
-              <span className="auth-fact-metric">{questionCount || "28"}</span>
-              <span className="auth-fact-desc">
-                <strong>Company Q&A threads</strong> answered directly by placed seniors and batch toppers.
-              </span>
-            </div>
-          </div>
-
-          <div className="auth-workflow-card">
-            <div className="auth-workflow-header">INTERVIEW ROADMAP</div>
-            <div className="auth-workflow-list">
-              <div className="auth-workflow-step">
-                <span className="auth-step-circle">1</span>
-                <span className="auth-step-label">Online assessment</span>
-              </div>
-              <div className="auth-workflow-step">
-                <span className="auth-step-circle">2</span>
-                <span className="auth-step-label">Technical rounds</span>
-              </div>
-              <div className="auth-workflow-step">
-                <span className="auth-step-circle">3</span>
-                <span className="auth-step-label">HR round</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Right 50% Form Area ── */}
+      {/* ── Right: Form card ── */}
       <div className="auth-form-side">
         <div className="auth-form-container">
           <div className="auth-form-header">
             <h2>Sign in to your account</h2>
-            <p>Access your campus interview experiences and peer discussions</p>
+            <p>Access campus interview records and peer discussions</p>
           </div>
 
           {error && (
@@ -154,14 +100,12 @@ const Login = () => {
 
           <form onSubmit={handleSubmit}>
             <div className="auth-form-group">
-              <label className="label" htmlFor="email">
-                Email address
-              </label>
+              <label className="label" htmlFor="email">Email address</label>
               <input
                 id="email"
                 type="email"
                 className="input"
-                placeholder="Ex: you@lpu.in"
+                placeholder="you@lpu.in"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
@@ -171,9 +115,7 @@ const Login = () => {
             </div>
 
             <div className="auth-form-group">
-              <label className="label" htmlFor="password">
-                Password
-              </label>
+              <label className="label" htmlFor="password">Password</label>
               <div className="password-input-wrap">
                 <input
                   id="password"
@@ -188,19 +130,16 @@ const Login = () => {
                 <button
                   type="button"
                   className="password-toggle-btn"
-                  onClick={() => setShowPassword((prev) => !prev)}
+                  onClick={() => setShowPassword((p) => !p)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  title={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" />
                     </svg>
                   ) : (
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" />
                     </svg>
                   )}
                 </button>
@@ -213,15 +152,12 @@ const Login = () => {
               disabled={submitting}
               style={{ marginTop: 8 }}
             >
-              {submitting ? "Signing in..." : "Sign In"}
+              {submitting ? "Signing in…" : "Sign In"}
             </button>
           </form>
 
           <div className="auth-form-footer">
-            Don't have an account?{" "}
-            <Link to="/signup">
-              Sign up
-            </Link>
+            Don't have an account?{" "}<Link to="/signup">Sign up</Link>
           </div>
         </div>
       </div>
