@@ -204,8 +204,15 @@ const Navbar = () => {
 
         {/* Right side: Controls & Mobile Hamburger */}
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Theme Toggle Button */}
+          {/* Theme Toggle Button (visible on desktop and mobile) */}
           <ThemeToggle />
+
+          {/* Notification bell on mobile top bar (when authenticated) */}
+          {isAuthenticated && (
+            <div className="nav-mobile-bell">
+              <NotificationBell />
+            </div>
+          )}
 
           {/* Desktop Auth Actions */}
           <div className="nav-desktop-actions">
@@ -259,18 +266,18 @@ const Navbar = () => {
           {/* Mobile Hamburger Button */}
           <button
             type="button"
-            className="nav-mobile-toggle"
+            className={`nav-mobile-toggle ${isMobileMenuOpen ? "open" : ""}`}
             aria-label="Toggle navigation menu"
             aria-expanded={isMobileMenuOpen}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -313,31 +320,38 @@ const Navbar = () => {
           <div className="nav-mobile-actions">
             {isAuthenticated ? (
               <>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0" }}>
-                  <Link
-                    to="/profile"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    style={{ color: "var(--navbar-text)", fontWeight: 600, border: "none" }}
-                  >
-                    {user.name} ({user.role})
-                  </Link>
-                  <NotificationBell />
-                </div>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    color: "var(--navbar-text)",
+                    fontWeight: 600,
+                    textDecoration: "none",
+                    minHeight: 44,
+                    padding: "0 4px",
+                  }}
+                >
+                  <span>{user.name}</span>
+                  <span className={getRoleBadgeClass(user.role)}>{user.role}</span>
+                </Link>
                 <button
                   type="button"
                   onClick={handleLogout}
                   className="btn btn-outline-white"
-                  style={{ width: "100%", justifyContent: "center", padding: "10px" }}
+                  style={{ width: "100%", justifyContent: "center", minHeight: 44 }}
                 >
                   Logout
                 </button>
               </>
             ) : (
-              <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 4 }}>
                 <Link
                   to="/login"
                   className="btn btn-outline-white"
-                  style={{ flex: 1, justifyContent: "center", padding: "10px" }}
+                  style={{ width: "100%", justifyContent: "center", minHeight: 44 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Login
@@ -345,7 +359,7 @@ const Navbar = () => {
                 <Link
                   to="/signup"
                   className="btn btn-primary"
-                  style={{ flex: 1, justifyContent: "center", padding: "10px" }}
+                  style={{ width: "100%", justifyContent: "center", minHeight: 44 }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign up

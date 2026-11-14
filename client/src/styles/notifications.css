@@ -48,10 +48,10 @@
 
 .notif-dropdown {
   position: absolute;
-  right: 0;
+  right: -10px;
   top: calc(100% + 10px);
   width: 360px;
-  max-width: 90vw;
+  max-width: calc(100vw - 24px);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);

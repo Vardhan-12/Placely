@@ -56,12 +56,14 @@
 }
 
 .home-hero-heading {
-  font-size: 3.4rem;
+  font-size: clamp(30px, 8vw, 40px);
   font-weight: 800;
   color: var(--text);
   line-height: 1.15;
   letter-spacing: normal;
   margin-bottom: var(--space-4);
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .home-hero-subhead {
@@ -698,4 +700,207 @@
   color: var(--muted);
   line-height: 1.6;
   margin: 0;
+}
+
+/* ── Mobile Responsive Adjustments ── */
+@media (max-width: 960px) {
+  .home-hero-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .home-hero-heading {
+    font-size: 2.5rem;
+  }
+
+  .home-manifesto-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero-band {
+    padding: var(--space-5) 0 var(--space-5);
+  }
+
+  .home-hero-heading {
+    font-size: clamp(30px, 8vw, 40px);
+    line-height: 1.15;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .home-hero-subhead {
+    font-size: 0.95rem;
+    max-width: 100%;
+  }
+
+  .home-search-bar {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .home-search-chips {
+    gap: 8px;
+    margin-bottom: var(--space-4);
+  }
+
+  .home-hero-cta-row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .home-hero-cta-row .btn {
+    width: 100%;
+    min-height: 44px;
+    white-space: nowrap;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .home-preview-card {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Stats strip: 2x2 grid with 16px gaps, dividers, and 32px spacing above and below */
+  .home-stats-strip {
+    margin: 32px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .home-stats-inner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 24px 16px;
+  }
+
+  .home-stat-divider {
+    display: none;
+  }
+
+  .home-stat-unit {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .home-stat-num {
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .home-stat-label {
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+
+  /* Table ledger becomes stacked cards */
+  .home-table-ledger-head {
+    display: none;
+  }
+
+  .home-table-ledger {
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .home-ledger-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    gap: 10px;
+    box-shadow: var(--shadow);
+  }
+
+  .home-ledger-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .home-ledger-row .col-date,
+  .home-ledger-row .col-company,
+  .home-ledger-row .col-roles,
+  .home-ledger-row .col-pkg,
+  .home-ledger-row .col-action {
+    width: auto;
+  }
+
+  .home-ledger-row .col-roles {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .home-ledger-row .col-action {
+    display: none;
+  }
+
+  /* Experiences list stays 1 per row but adapts for smaller screens */
+  .home-exp-record {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .home-exp-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .home-exp-topline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .home-exp-company-name {
+    font-size: 1rem;
+  }
+
+  .home-exp-role-title {
+    font-size: 0.85rem;
+  }
+
+  .home-exp-subline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.8rem;
+  }
+
+  .home-exp-right {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .home-section-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }

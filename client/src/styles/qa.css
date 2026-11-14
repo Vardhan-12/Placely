@@ -309,3 +309,62 @@
   border-color: var(--accent);
   color: var(--on-accent);
 }
+
+@media (max-width: 768px) {
+  .bookmarks-container {
+    padding: 24px 16px;
+  }
+
+  .bookmark-card-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .bookmark-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .bookmark-actions .btn {
+    flex: 1;
+    min-height: 44px;
+  }
+
+  .myposts-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    gap: 16px;
+  }
+
+  .myposts-tab-btn {
+    padding: 10px 8px;
+    font-size: 0.95rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .myposts-subtabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .myposts-subtab-btn {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .qa-question-header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .qa-question-meta {
+    flex-wrap: wrap;
+  }
+}

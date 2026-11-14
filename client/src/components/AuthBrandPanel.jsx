@@ -165,7 +165,7 @@ export default function AuthBrandPanel({
                 x={s.cx} y={s.cy + NH/2 + 16}
                 textAnchor="middle"
                 className="jnode-label"
-                fontSize="10"
+                fontSize="11"
               >
                 {s.label}
               </text>

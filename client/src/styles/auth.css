@@ -167,8 +167,9 @@
 
 /* station label */
 .jnode-label {
-  fill: var(--muted);
+  fill: var(--text);
   font-family: var(--font-family);
+  font-size: 11px;
   font-weight: 600;
 }
 
@@ -580,6 +581,10 @@ textarea.input {
     max-width: 100%;
     padding: 24px 20px;
   }
+
+  .auth-form-footer {
+    font-size: 14px;
+  }
 }
 
 /* small mobile — further compress banner */
@@ -595,5 +600,14 @@ textarea.input {
 
   .abp-headline {
     font-size: 20px;
+  }
+
+  .auth-form-side {
+    padding: 16px 12px 36px;
+  }
+
+  .auth-form-container {
+    padding: 20px 14px;
+    border-radius: 10px;
   }
 }

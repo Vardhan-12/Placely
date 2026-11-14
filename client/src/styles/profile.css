@@ -89,3 +89,28 @@
   color: var(--muted);
   font-weight: 600;
 }
+
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 24px 16px;
+  }
+
+  .profile-card {
+    padding: 20px 16px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .profile-details-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .profile-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

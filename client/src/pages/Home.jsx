@@ -364,9 +364,16 @@ const Home = () => {
                     to={`/companies/${c._id}`}
                     className="home-ledger-row"
                   >
-                    <span className="col-date">
-                      <span className="home-date-stamp">{formatDate(c.nextDriveDate)}</span>
-                    </span>
+                    <div className="home-ledger-topline">
+                      <span className="col-date">
+                        <span className="home-date-stamp">{formatDate(c.nextDriveDate)}</span>
+                      </span>
+                      <span className="col-pkg">
+                        <span className="home-pkg-badge">
+                          {formatPackageRange(c.packageMin, c.packageMax)}
+                        </span>
+                      </span>
+                    </div>
                     <span className="col-company">
                       <strong className="home-ledger-comp-name">{c.name}</strong>
                     </span>
@@ -374,11 +381,6 @@ const Home = () => {
                       {c.roles && c.roles.length > 0
                         ? c.roles.slice(0, 2).join(", ") + (c.roles.length > 2 ? ` +${c.roles.length - 2}` : "")
                         : "Campus Hire"}
-                    </span>
-                    <span className="col-pkg">
-                      <span className="home-pkg-badge">
-                        {formatPackageRange(c.packageMin, c.packageMax)}
-                      </span>
                     </span>
                     <span className="col-action">
                       <span className="home-arrow-btn">&rarr;</span>

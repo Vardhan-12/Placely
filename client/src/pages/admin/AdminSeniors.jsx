@@ -145,7 +145,7 @@ const AdminSeniors = () => {
           No {tab} seniors found.
         </div>
       ) : (
-        <div className="admin-table-wrap">
+        <div className="admin-table-wrap admin-seniors-table-wrap">
           <table className="admin-table">
             <thead>
               <tr>
