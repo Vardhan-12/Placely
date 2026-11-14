@@ -424,7 +424,7 @@ const CompanyDetail = () => {
                     <span>
                       {exp.rounds?.length || 0} rounds detailed
                     </span>
-                    <span style={{ fontWeight: 600, color: "var(--navy)" }}>
+                    <span style={{ fontWeight: 600, color: "var(--accent)" }}>
                       ▲ {exp.upvotes?.length || 0} upvotes
                     </span>
                   </div>

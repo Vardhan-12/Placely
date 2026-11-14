@@ -503,7 +503,7 @@ const ExperienceForm = () => {
                   type="checkbox"
                   checked={isAnonymous}
                   onChange={(e) => setIsAnonymous(e.target.checked)}
-                  style={{ width: 18, height: 18, accentColor: "var(--blue)" }}
+                  style={{ width: 18, height: 18, accentColor: "var(--accent)" }}
                 />
                 Post anonymously (your name will be hidden from everyone)
               </label>
@@ -514,7 +514,7 @@ const ExperienceForm = () => {
           <div style={{ marginTop: 24, marginBottom: 28 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div>
-                <h3 style={{ fontSize: "1.2rem", color: "var(--navy)" }}>
+                <h3 style={{ fontSize: "1.2rem", color: "var(--text)" }}>
                   Interview Rounds Breakdown
                 </h3>
                 <p style={{ color: "var(--muted)", fontSize: "0.9rem" }}>
@@ -534,7 +534,7 @@ const ExperienceForm = () => {
               {rounds.map((round, index) => (
                 <div key={index} className="form-round-card">
                   <div className="form-round-top">
-                    <span style={{ fontWeight: 700, color: "var(--navy)" }}>
+                    <span style={{ fontWeight: 700, color: "var(--text)" }}>
                       Round {index + 1}
                     </span>
 

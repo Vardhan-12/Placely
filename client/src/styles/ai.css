@@ -151,7 +151,7 @@
   position: absolute;
   left: 6px;
   top: 0;
-  color: var(--blue);
+  color: var(--accent);
   font-weight: bold;
 }
 
@@ -189,8 +189,8 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--blue);
-  color: #FFFFFF;
+  background: var(--accent);
+  color: var(--on-accent);
   font-weight: 700;
   font-size: 0.8rem;
   display: flex;

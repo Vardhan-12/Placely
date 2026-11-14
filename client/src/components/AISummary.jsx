@@ -54,7 +54,7 @@ const AISummary = ({ companyId }) => {
   if (!isAuthenticated) {
     return (
       <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-        <h3 style={{ marginBottom: 12, color: "var(--navy)" }}>
+        <h3 style={{ marginBottom: 12, color: "var(--text)" }}>
           Unlock AI Insights
         </h3>
         <p style={{ color: "var(--muted)", marginBottom: 20 }}>
@@ -71,7 +71,7 @@ const AISummary = ({ companyId }) => {
   if (!hasFetched && !loading) {
     return (
       <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-        <h3 style={{ marginBottom: 12, color: "var(--navy)" }}>
+        <h3 style={{ marginBottom: 12, color: "var(--text)" }}>
           AI Interview Insights
         </h3>
         <p style={{ color: "var(--muted)", marginBottom: 24, maxWidth: 520, margin: "0 auto 24px" }}>

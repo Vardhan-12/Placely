@@ -86,7 +86,7 @@
 
 .qa-expand-indicator {
   font-size: 0.85rem;
-  color: var(--blue);
+  color: var(--accent);
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -175,9 +175,9 @@
 
 /* ── Bookmarks Page ── */
 .bookmarks-container {
-  max-width: 1024px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 36px 16px;
+  padding: 36px 32px;
 }
 
 .bookmarks-header {
@@ -277,8 +277,8 @@
 }
 
 .myposts-tab-btn.active {
-  color: var(--blue);
-  border-bottom-color: var(--blue);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .myposts-subtabs {
@@ -300,12 +300,12 @@
 }
 
 .myposts-subtab-btn:hover {
-  border-color: var(--blue);
-  color: var(--blue);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .myposts-subtab-btn.active {
-  background-color: var(--blue);
-  border-color: var(--blue);
-  color: #FFFFFF;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
 }

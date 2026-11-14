@@ -278,7 +278,7 @@ const QATab = ({ companyId }) => {
         ) : (
           <div className="qa-login-hint">
             Have questions about this company?{" "}
-            <Link to="/login" style={{ fontWeight: 600, color: "var(--blue)" }}>
+            <Link to="/login" style={{ fontWeight: 600, color: "var(--accent)" }}>
               Log in to ask
             </Link>
           </div>
@@ -292,7 +292,7 @@ const QATab = ({ companyId }) => {
         <div className="form-error">{error}</div>
       ) : questions.length === 0 ? (
         <div className="card" style={{ textAlign: "center", padding: "48px 24px" }}>
-          <h3 style={{ marginBottom: 8, color: "var(--navy)" }}>No Questions Yet</h3>
+          <h3 style={{ marginBottom: 8, color: "var(--text)" }}>No Questions Yet</h3>
           <p style={{ color: "var(--muted)", fontSize: "0.95rem" }}>
             Be the first to ask a question about this company's hiring process!
           </p>
@@ -321,7 +321,7 @@ const QATab = ({ companyId }) => {
                       <span>&bull;</span>
                       <span>{formatDate(q.createdAt)}</span>
                       <span>&bull;</span>
-                      <span style={{ fontWeight: 600, color: "var(--blue)" }}>
+                      <span style={{ fontWeight: 600, color: "var(--accent)" }}>
                         💬 {q.answerCount || 0} answer{q.answerCount !== 1 ? "s" : ""}
                       </span>
                     </div>

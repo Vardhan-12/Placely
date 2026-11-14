@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="app-footer">
       <div className="container">
         <div className="app-footer-brand">
-          Placely<span style={{ color: "var(--cyan)" }}>.</span>
+          Placely<span style={{ color: "var(--accent)" }}>.</span>
         </div>
         <p className="app-footer-tagline">
           LPU placement intelligence, interview experiences, and peer Q&A platform

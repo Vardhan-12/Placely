@@ -53,13 +53,16 @@
 .admin-sidebar-btn.active {
   background: var(--navbar-hover);
   color: var(--navbar-text);
-  border-left-color: var(--cyan);
+  border-left-color: var(--accent);
 }
 
 .admin-sidebar-icon {
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 18px;
-  text-align: center;
+  height: 18px;
+  color: currentColor;
 }
 
 /* ── Main content ───────────────────────────────── */
@@ -188,8 +191,8 @@
 }
 
 .admin-tab-btn.active {
-  color: var(--blue);
-  border-bottom-color: var(--blue);
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 /* ── Action row (title + button) ────────────────── */
@@ -345,7 +348,7 @@
 .admin-checkbox-row input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: var(--blue);
+  accent-color: var(--accent);
 }
 
 /* ── Access denied ──────────────────────────────── */
@@ -375,4 +378,46 @@
 .admin-denied-box p {
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+/* ── Responsive Admin Styles (Sidebar -> Top Tab Strip) ───────────── */
+@media (max-width: 860px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px 16px;
+    gap: 8px;
+    border-right: none;
+    border-bottom: 1px solid var(--navbar-border);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-sidebar-label {
+    display: none;
+  }
+
+  .admin-sidebar-btn {
+    white-space: nowrap;
+    padding: 8px 14px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: var(--radius-btn);
+    font-size: 0.85rem;
+    width: auto;
+  }
+
+  .admin-sidebar-btn.active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+    background: var(--navbar-hover);
+  }
+
+  .admin-main {
+    padding: 20px 16px;
+  }
 }

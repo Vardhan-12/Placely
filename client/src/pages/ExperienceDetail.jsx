@@ -347,7 +347,7 @@ const ExperienceDetail = () => {
                     <span
                       style={{
                         fontWeight: 700,
-                        color: "var(--navy)",
+                        color: "var(--text)",
                         fontSize: "1.05rem",
                       }}
                     >

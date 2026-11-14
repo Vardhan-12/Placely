@@ -2,9 +2,9 @@
 
 /* Layout container for experiences (Desktop oriented) */
 .exp-container {
-  max-width: 1024px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 36px 16px;
+  padding: 36px 32px;
 }
 
 /* Detail Header */
@@ -23,7 +23,7 @@
 .exp-company-link {
   font-size: 1rem;
   font-weight: 600;
-  color: var(--blue);
+  color: var(--accent);
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -87,8 +87,8 @@
 
 .btn-action-active {
   background-color: var(--badge-blue-bg);
-  border-color: var(--blue);
-  color: var(--blue);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* Detail Sections */

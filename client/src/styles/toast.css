@@ -49,7 +49,7 @@
 }
 
 .toast-info {
-  border-left: 4px solid var(--blue);
+  border-left: 4px solid var(--accent);
 }
 
 .toast-close {

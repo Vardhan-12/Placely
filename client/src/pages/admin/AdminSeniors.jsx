@@ -165,8 +165,8 @@ const AdminSeniors = () => {
                 return (
                   <tr key={s._id}>
                     <td>
-                      <div style={{ fontWeight: 600, color: "var(--navy)" }}>{s.name}</div>
-                      <div style={{ fontSize: "0.82rem", color: "var(--blue)", fontWeight: 500 }}>
+                      <div style={{ fontWeight: 600, color: "var(--text)" }}>{s.name}</div>
+                      <div style={{ fontSize: "0.82rem", color: "var(--accent)", fontWeight: 500 }}>
                         {s.placedCompany ? `${s.placedCompany} (${s.placedYear || "—"})` : "—"}
                       </div>
                     </td>

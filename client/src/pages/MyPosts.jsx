@@ -454,7 +454,7 @@ const MyPosts = () => {
                               <span>&bull;</span>
                               <span>{formatDate(q.createdAt)}</span>
                               <span>&bull;</span>
-                              <span style={{ fontWeight: 600, color: "var(--blue)" }}>
+                              <span style={{ fontWeight: 600, color: "var(--accent)" }}>
                                 💬 {q.answerCount || 0} answer
                                 {q.answerCount !== 1 ? "s" : ""}
                               </span>

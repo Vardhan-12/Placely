@@ -420,7 +420,7 @@ const AdminCompanies = () => {
                 {form.rounds.map((round, idx) => (
                   <div key={idx} className="admin-round-card">
                     <div className="admin-round-top">
-                      <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--navy)" }}>
+                      <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--text)" }}>
                         Round {idx + 1}
                       </span>
                       <button

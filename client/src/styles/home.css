@@ -1,234 +1,701 @@
-/* home.css - Styles for Home page (desktop only, clean & minimal, no gradients) */
+/* home.css - Editorial Technical Archive Aesthetic for Placely Home */
 
-.home-container {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 48px 20px 64px;
+.home-wrapper {
+  width: 100%;
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
 }
 
-/* ── Hero Section ── */
-.home-hero {
-  text-align: center;
-  padding: 40px 20px 48px;
+/* ── HERO BAND (Uses theme surface-2 in light, surface in dark) ── */
+.home-hero-band {
+  background-color: var(--surface-2);
+  color: var(--text);
+  padding: var(--space-7) 0 var(--space-6);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  /* Technical grid pattern using border token */
+  background-image: 
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.home-hero-inner {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+/* ── Hero Left Column ── */
+.home-hero-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: var(--space-3);
+}
+
+.home-kicker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
+}
+
+.home-hero-heading {
+  font-size: 3.4rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: normal;
+  margin-bottom: var(--space-4);
+}
+
+.home-hero-subhead {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 540px;
+  margin-bottom: var(--space-5);
+}
+
+/* Search Bar in Hero - Uses theme surface & theme text with clear focus ring */
+.home-search-bar {
+  display: flex;
+  align-items: center;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  margin-bottom: 48px;
-  box-shadow: var(--shadow);
+  padding: 4px 6px 4px 14px;
+  max-width: 540px;
+  margin-bottom: var(--space-3);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
-.home-hero-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1.2;
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
+.home-search-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
 }
 
-.home-hero-desc {
-  font-size: 1.1rem;
+.home-search-bar-icon {
   color: var(--muted);
-  max-width: 600px;
-  margin: 0 auto 28px;
-  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  margin-right: var(--space-2);
+  flex-shrink: 0;
 }
 
-.home-hero-actions {
+.home-search-bar-input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text) !important;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 8px 0;
+}
+
+.home-search-bar-input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.home-search-bar-btn {
+  background-color: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 8px 18px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+  flex-shrink: 0;
+}
+
+.home-search-bar-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+/* Chips under search */
+.home-search-chips {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+
+.home-chips-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.home-chip {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 120ms ease;
+}
+
+.home-chip:hover {
+  background-color: var(--surface-2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.home-hero-cta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ── Hero Right Column: Product Preview Card ── */
+.home-hero-right {
+  display: flex;
+  justify-content: center;
+}
+
+.home-preview-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+}
+
+.home-preview-chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.home-preview-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.home-preview-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--border-strong);
+}
+
+.home-preview-badge {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.home-preview-year {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.home-preview-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.home-preview-title {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.home-preview-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.home-preview-pkg {
+  /* font uniform: Plus Jakarta Sans */
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ── Result Stamp Signature Detail ── */
+.home-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 2px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+.home-stamp-selected {
+  background-color: var(--badge-success-bg);
+  border-color: var(--success);
+  color: var(--badge-success-text);
+}
+
+.home-stamp-rejected {
+  background-color: var(--badge-danger-bg);
+  border-color: var(--danger);
+  color: var(--badge-danger-text);
+}
+
+.home-stamp-waiting {
+  background-color: var(--badge-warning-bg);
+  border-color: var(--warning);
+  color: var(--badge-warning-text);
+}
+
+/* Timeline in Preview */
+.home-preview-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  padding-left: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.home-preview-timeline::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 11px;
+  width: 1px;
+  background-color: var(--border);
+}
+
+.home-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  position: relative;
+}
+
+.home-timeline-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 32px;
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  z-index: 1;
 }
 
-/* ── Search Bar ── */
-.home-search-form {
-  display: flex;
-  align-items: center;
-  max-width: 540px;
-  margin: 0 auto;
-  gap: 10px;
-}
-
-.home-search-input {
+.home-timeline-content {
   flex: 1;
-  padding: 12px 16px;
-  font-size: 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  outline: none;
-  background-color: var(--surface);
-  color: var(--text);
 }
 
-.home-search-input:focus {
-  border-color: var(--blue);
-}
-
-/* ── Sections ── */
-.home-section {
-  margin-bottom: 56px;
-}
-
-.home-section-header {
+.home-timeline-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 3px;
 }
 
-.home-section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0;
-}
-
-.home-section-link {
-  font-size: 0.95rem;
+.home-timeline-name {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.88rem;
   font-weight: 600;
-  color: var(--blue);
-}
-
-/* ── Upcoming Drives Grid ── */
-.home-drives-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.home-drive-card {
-  display: block;
-  padding: 20px;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.15s ease;
-  box-shadow: var(--shadow);
-}
-
-.home-drive-card:hover {
-  border-color: var(--blue);
-}
-
-.home-drive-name {
-  font-size: 1.15rem;
-  font-weight: 700;
   color: var(--text);
-  margin-bottom: 8px;
 }
 
-.home-drive-pkg {
-  font-size: 0.95rem;
-  color: var(--blue);
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.home-drive-date {
-  font-size: 0.85rem;
+.home-timeline-time {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.72rem;
   color: var(--muted);
 }
 
-/* ── Latest Experiences Grid ── */
-.home-exp-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+.home-timeline-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
 }
 
-.home-exp-card {
+.home-tag {
+  background-color: var(--hover-subtle);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+}
+
+.home-preview-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.home-preview-caption {
+  color: var(--muted);
+}
+
+.home-preview-link a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── REAL METRICS STRIP ── */
+.home-stats-strip {
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.home-stats-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-4);
+}
+
+.home-stat-unit {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.home-stat-num {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.home-stat-label {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.home-stat-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border);
+}
+
+/* ── BODY CONTAINER & SECTIONS (Generous spacing: at least 40px margin-top) ── */
+.home-body-container {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-7);
+}
+
+.home-content-section {
+  margin-bottom: var(--space-7);
+}
+
+.home-section-heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.home-content-title {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.home-content-sub {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.home-section-action-link {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home-section-action-link:hover {
+  color: var(--accent-hover);
+}
+
+.home-empty-notice {
+  padding: var(--space-5);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── UPCOMING DRIVES: TABLE-LIKE LEDGER ── */
+.home-table-ledger {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.home-table-ledger-head {
+  display: grid;
+  grid-template-columns: 140px 1.2fr 1.2fr 160px 40px;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--table-stripe);
+  border-bottom: 1px solid var(--border);
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.home-table-ledger-body {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
+}
+
+.home-ledger-row {
+  display: grid;
+  grid-template-columns: 140px 1.2fr 1.2fr 160px 40px;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 100ms ease;
+}
+
+.home-ledger-row:last-child {
+  border-bottom: none;
+}
+
+.home-ledger-row:hover {
+  background-color: var(--hover-subtle);
+}
+
+.home-date-stamp {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.home-ledger-comp-name {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.home-pkg-badge {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.home-arrow-btn {
+  color: var(--muted);
+  font-weight: 600;
+  transition: transform 120ms ease, color 120ms ease;
+}
+
+.home-ledger-row:hover .home-arrow-btn,
+.home-exp-record:hover .home-arrow-btn {
+  transform: translateX(3px);
+  color: var(--accent);
+}
+
+/* ── LATEST EXPERIENCES: STAMPED RECORD LIST ── */
+.home-exp-ledger {
+  display: flex;
+  flex-direction: column;
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.15s ease;
-  box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-.home-exp-card:hover {
-  border-color: var(--blue);
-}
-
-.home-exp-company {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.home-exp-role {
-  font-size: 0.9rem;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.home-exp-footer {
+.home-exp-record {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  font-size: 0.85rem;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  transition: background-color 100ms ease;
 }
 
-/* ── How It Works ── */
-.home-steps-grid {
+.home-exp-record:last-child {
+  border-bottom: none;
+}
+
+.home-exp-record:hover {
+  background-color: var(--hover-subtle);
+}
+
+.home-exp-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.home-exp-meta-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-exp-topline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.home-exp-company-name {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.home-exp-role-title {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.home-exp-subline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.home-exp-sub-pkg {
+  /* font uniform: Plus Jakarta Sans */
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.home-exp-diff {
+  /* font uniform: Plus Jakarta Sans */
+  text-transform: capitalize;
+}
+
+.home-exp-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.home-upvote-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+  background-color: var(--badge-gray-bg);
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+/* ── WHY PLACELY: MANIFESTO / PILLARS ── */
+.home-manifesto-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: var(--space-4);
 }
 
-.home-step-card {
-  padding: 24px;
+.home-manifesto-card {
+  padding: var(--space-5);
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  text-align: left;
-  box-shadow: var(--shadow);
+  position: relative;
 }
 
-.home-step-num {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--blue);
-  margin-bottom: 12px;
+.home-manifesto-num {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-2);
 }
 
-.home-step-title {
-  font-size: 1.1rem;
+.home-manifesto-heading {
+  /* font uniform: Plus Jakarta Sans */
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-3);
+  line-height: 1.35;
 }
 
-.home-step-desc {
-  font-size: 0.9rem;
+.home-manifesto-text {
+  font-size: 0.88rem;
   color: var(--muted);
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
-}
-
-/* ── Footer ── */
-.home-footer-strip {
-  border-top: 1px solid var(--border);
-  padding: 32px 0 16px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.home-footer-brand {
-  font-weight: 700;
-  color: var(--text);
-  font-size: 1.05rem;
-  margin-bottom: 4px;
 }

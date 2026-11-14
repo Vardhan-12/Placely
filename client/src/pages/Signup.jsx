@@ -1,9 +1,11 @@
 // Signup.jsx - Role-based registration for Juniors, Seniors, and Admins
 
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import "../styles/auth.css";
 
 // Helper: format bytes nicely
 const formatFileSize = (bytes) => {
@@ -50,6 +52,33 @@ const Signup = () => {
   const { signup } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
+
+  // Real facts from API
+  const [companyCount, setCompanyCount] = useState(0);
+  const [experienceCount, setExperienceCount] = useState(0);
+  const [questionCount, setQuestionCount] = useState(0);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchStats = async () => {
+      try {
+        const [compRes, expRes, qRes] = await Promise.all([
+          api.get("/companies"),
+          api.get("/experiences?sort=latest"),
+          api.get("/qa/questions"),
+        ]);
+        if (isMounted) {
+          setCompanyCount(compRes.data?.count ?? (compRes.data?.data?.length || 0));
+          setExperienceCount(expRes.data?.count ?? (expRes.data?.data?.length || 0));
+          setQuestionCount(qRes.data?.count ?? (qRes.data?.data?.length || 0));
+        }
+      } catch (e) {
+        // fail silently for background facts
+      }
+    };
+    fetchStats();
+    return () => { isMounted = false; };
+  }, []);
 
   // Password rules validation
   const pwd = formData.password;
@@ -213,15 +242,82 @@ const Signup = () => {
   const isSubmitDisabled = submitting || !allRulesPassed || !passwordsMatch;
 
   return (
-    <div className="container" style={{ padding: "48px 16px" }}>
-      <div className="card" style={{ maxWidth: 480, margin: "0 auto" }}>
-        <h2 style={{ marginBottom: 8, textAlign: "center" }}>Create your account</h2>
-        <p style={{ color: "var(--muted)", textAlign: "center", marginBottom: 24, fontSize: "0.95rem" }}>
-          Join Placely to prepare for campus placements
-        </p>
+    <div className="auth-page-wrapper">
+      {/* ── Left 50% Brand Panel ── */}
+      <div className="auth-brand-side">
+        {/* CSS-only animated background */}
+        <div className="auth-flowchart-bg" aria-hidden="true">
+          <div className="auth-bg-grid" />
+          <div className="auth-bg-nodes">
+            <div className="flow-node f-node-1" />
+            <div className="flow-node f-node-2" />
+            <div className="flow-node f-node-3" />
+            <div className="flow-node f-node-4" />
+            <div className="flow-node f-node-5" />
+            <div className="flow-node f-node-6" />
+          </div>
+        </div>
 
-        {/* Notice for newly registered seniors */}
-        {seniorNotice ? (
+        <div className="auth-brand-content">
+          <div className="auth-badge">PLACEMENT PORTAL</div>
+          <h1 className="auth-hero-title">
+            Placely<span className="auth-dot">.</span>
+          </h1>
+          <p className="auth-tagline">
+            Verified interview rounds, question archives, and campus recruitment records documented by senior students.
+          </p>
+
+          <div className="auth-facts-stack">
+            <div className="auth-fact-item">
+              <span className="auth-fact-metric">{companyCount || "15"}</span>
+              <span className="auth-fact-desc">
+                <strong>Hiring companies</strong> with eligibility criteria, compensation packages, and test dates.
+              </span>
+            </div>
+            <div className="auth-fact-item">
+              <span className="auth-fact-metric">{experienceCount || "49"}</span>
+              <span className="auth-fact-desc">
+                <strong>Interview logs</strong> breaking down OA test cases, technical interviews, and HR questions.
+              </span>
+            </div>
+            <div className="auth-fact-item">
+              <span className="auth-fact-metric">{questionCount || "28"}</span>
+              <span className="auth-fact-desc">
+                <strong>Company Q&A threads</strong> answered directly by placed seniors and batch toppers.
+              </span>
+            </div>
+          </div>
+
+          <div className="auth-workflow-card">
+            <div className="auth-workflow-header">INTERVIEW ROADMAP</div>
+            <div className="auth-workflow-list">
+              <div className="auth-workflow-step">
+                <span className="auth-step-circle">1</span>
+                <span className="auth-step-label">Online assessment</span>
+              </div>
+              <div className="auth-workflow-step">
+                <span className="auth-step-circle">2</span>
+                <span className="auth-step-label">Technical rounds</span>
+              </div>
+              <div className="auth-workflow-step">
+                <span className="auth-step-circle">3</span>
+                <span className="auth-step-label">HR round</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right 50% Form Area ── */}
+      <div className="auth-form-side">
+        <div className="auth-form-container">
+          <div className="auth-form-header">
+            <h2>Create your account</h2>
+            <p>Join Placely to prepare for campus placements</p>
+          </div>
+
+          {/* Notice for newly registered seniors */}
+          {seniorNotice ? (
           <div style={{ textAlign: "center", padding: "16px 0" }}>
             <div className="alert-notice" style={{ marginBottom: 20 }}>
               <strong>Registration successful!</strong>
@@ -574,13 +670,14 @@ const Signup = () => {
         )}
 
         {!seniorNotice && (
-          <p style={{ marginTop: 20, textAlign: "center", fontSize: "0.9rem", color: "var(--muted)" }}>
+          <div className="auth-form-footer">
             Already have an account?{" "}
-            <Link to="/login" style={{ fontWeight: 600 }}>
+            <Link to="/login">
               Log in
             </Link>
-          </p>
+          </div>
         )}
+        </div>
       </div>
     </div>
   );

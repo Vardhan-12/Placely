@@ -19,7 +19,7 @@ const Spinner = ({ message = "Loading..." }) => {
           width: 32,
           height: 32,
           border: "3px solid var(--border)",
-          borderTopColor: "var(--blue)",
+          borderTopColor: "var(--accent)",
           borderRadius: "50%",
           animation: "spin 0.75s linear infinite",
         }}
